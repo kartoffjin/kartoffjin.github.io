@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кот каждый час</title>
+    <title>ПатриоКОТ 3000</title>
     <style>
         /* Анимация мерцания */
         @keyframes blink {
@@ -21,7 +21,13 @@
             }
         }
         
-        /* Стиль для огромной надписи - ИСПРАВЛЕНО */
+        /* Триколор-фон */
+        @keyframes russianFlag {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        /* Стиль для огромной надписи */
         .crazy-title {
             position: fixed;
             top: 0;
@@ -43,13 +49,10 @@
             border-bottom: 4px solid red;
             box-shadow: 0 0 100px rgba(255, 0, 0, 0.8);
             line-height: 1.2;
-            white-space: normal;
             word-wrap: break-word;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
             min-height: 100vh;
             display: flex;
@@ -58,8 +61,35 @@
             color: white;
             position: relative;
             overflow-x: hidden;
-            padding-top: 120px; /* Отступ для надписи */
+            padding-top: 120px;
             box-sizing: border-box;
+            /* Патриотичный градиент */
+            background: linear-gradient(135deg, 
+                #ffffff 0%, 
+                #ffffff 20%, 
+                #0032a0 20%, 
+                #0032a0 40%, 
+                #da291c 40%, 
+                #da291c 60%, 
+                #0032a0 60%, 
+                #0032a0 80%, 
+                #ffffff 80%, 
+                #ffffff 100%);
+            background-size: 300% 300%;
+            animation: russianFlag 20s ease infinite;
+        }
+        
+        /* Затемнение фона для лучшей читаемости */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+            pointer-events: none;
         }
         
         .container {
@@ -69,7 +99,7 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             max-width: 600px;
             margin: 20px;
             position: relative;
@@ -77,10 +107,15 @@
             width: 90%;
         }
         
+        /* Патриотичный заголовок */
         h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #0032a0, #da291c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
         }
         
         .cat-image-container {
@@ -92,6 +127,7 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.2);
         }
         
         .cat-image {
@@ -108,16 +144,19 @@
         
         .timer-info {
             font-size: 1.2em;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 50, 160, 0.3);
+            backdrop-filter: blur(5px);
             padding: 15px;
             border-radius: 10px;
             margin: 20px 0;
+            border: 2px solid rgba(218, 41, 28, 0.5);
         }
         
         .time-left {
             font-size: 1.5em;
             font-weight: bold;
             color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         
         .loading {
@@ -127,7 +166,7 @@
         }
         
         .button {
-            background: rgba(255, 255, 255, 0.25);
+            background: linear-gradient(45deg, #0032a0, #da291c);
             border: 2px solid white;
             color: white;
             padding: 12px 30px;
@@ -139,16 +178,39 @@
             position: relative;
             z-index: 10000;
             pointer-events: auto;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .button:hover {
-            background: rgba(255, 255, 255, 0.4);
             transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
         
         .button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
+        }
+        
+        .source-info {
+            margin-top: 15px;
+            font-size: 0.9em;
+            opacity: 0.9;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 5px;
+        }
+        
+        .source-info a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .source-info a:hover {
+            text-decoration: underline;
         }
         
         .footer {
@@ -160,11 +222,11 @@
         .footer a {
             color: white;
             pointer-events: auto;
+            text-decoration: none;
         }
         
-        .error {
-            color: #ff6b6b;
-            padding: 20px;
+        .footer a:hover {
+            text-decoration: underline;
         }
         
         @media (max-width: 768px) {
@@ -190,28 +252,32 @@
     </style>
 </head>
 <body>
-    <!-- Огромная мерцающая красная надпись - ИСПРАВЛЕНО позиционирование -->
+    <!-- Огромная мерцающая красная надпись -->
     <div class="crazy-title">КОТЫ ЕБЛАНЧИКИ 3000</div>
     
     <div class="container">
-        <h1>🐱 Кот каждый час</h1>
-        <p>Новый пушистый друг каждый час!</p>
+        <h1>🐱 ПАТРИОКОТ 🐱</h1>
+        <p>Только лучшие российские коты!</p>
         
         <div class="cat-image-container">
-            <img id="catImage" class="cat-image" src="" alt="Случайный кот" style="display: none;">
-            <div id="loadingIndicator" class="loading">😺 Ищем котика...</div>
+            <img id="catImage" class="cat-image" src="" alt="Патриотичный кот" style="display: none;">
+            <div id="loadingIndicator" class="loading">🔍 Ищем самого патриотичного кота...</div>
         </div>
         
         <div class="timer-info">
-            <div>Следующий кот через:</div>
+            <div>🇷🇺 Следующий кот через 🇷🇺</div>
             <div id="timer" class="time-left">59:59</div>
         </div>
         
         <button id="refreshButton" class="button">🔄 Хочу кота сейчас</button>
         <button id="copyButton" class="button">🔗 Скопировать ссылку</button>
         
+        <div id="sourceDisplay" class="source-info">
+            Источник: <span id="currentSource">поиск...</span>
+        </div>
+        
         <div class="footer">
-            <p>Изображения предоставлены <a href="https://cataas.com" target="_blank">CATAAS</a> и <a href="https://thecatapi.com" target="_blank">TheCatAPI</a></p>
+            <p>Патриотичные коты из российских источников 🇷🇺</p>
         </div>
     </div>
 
@@ -224,88 +290,117 @@
         let catImage = document.getElementById('catImage');
         let loadingIndicator = document.getElementById('loadingIndicator');
         let timerDisplay = document.getElementById('timer');
+        let currentSource = document.getElementById('currentSource');
         
-        // Функция для получения случайного кота - ИСПРАВЛЕНО
+        // Российские источники котов
+        const russianCatSources = [
+            {
+                name: "Яндекс.Диск (Котики)",
+                type: "direct",
+                urls: [
+                    "https://avatars.mds.yandex.net/get-zen_doc/5235967/pub_624d5f5cb3f7695a0aae3e44_624d676f69fe6c7ad249f6e8/scale_1200",
+                    "https://avatars.mds.yandex.net/get-zen_doc/1881605/pub_5f2a52d7e719fb28e83ec896_5f2a5338b7c0642ffd594491/scale_1200",
+                    "https://avatars.mds.yandex.net/get-zen_doc/3955021/pub_606ac07b1f81d5454f4b1e16_606ac115ad2eec07e86b30da/scale_1200",
+                    "https://avatars.mds.yandex.net/get-zen_doc/1875070/pub_5d56f23ccb06a400ad45b08c_5d56f24f222d2c00ad403d93/scale_1200",
+                    "https://avatars.mds.yandex.net/get-zen_doc/15961/pub_5c0e6d62269da700aa5adc57_5c0e6d8c293fc300aa52a906/scale_1200",
+                    "https://avatars.mds.yandex.net/get-zen_doc/1866802/pub_5d34e9e3fc31cd00ad2a97e1_5d34e9f8d09ed200adc56c72/scale_1200",
+                    "https://avatars.mds.yandex.net/get-zen_doc/171870/pub_5c8cbfd6e8ba2300b3b228e1_5c8ccf07f4d1a600b3ae76dd/scale_1200"
+                ]
+            },
+            {
+                name: "Моспитомец",
+                type: "mos",
+                urls: [
+                    "https://www.mos.ru/upload/newsfeed/newsfeed/mspitomec(1).jpg",
+                    "https://www.mos.ru/upload/newsfeed/newsfeed/mspitomec-koshki.jpg",
+                    "https://www.mos.ru/upload/newsfeed/newsfeed/prijut-koshki(1).jpg"
+                ]
+            },
+            {
+                name: "ВКонтакте (Котики)",
+                type: "vk",
+                urls: [
+                    "https://sun9-78.userapi.com/impg/PgEEgMOJ__q8GME7gGRWgC5mTtwES3O8E5xL6A/JjzyM8eBfM4.jpg?size=604x402&quality=95&sign=3b1b7b1b7b1b7b1b7b1b7b1b7b1b7b1b&type=album",
+                    "https://sun9-32.userapi.com/impg/Y7hxIxRwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw/6J9rX9rX9rX9rX9rX9rX9rX9rX9rX9rX9rX9rX.jpg?size=604x402&quality=95&sign=2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c&type=album"
+                ]
+            }
+        ];
+        
+        // Функция для получения случайного кота из российских источников
         async function fetchRandomCat() {
             // Показываем загрузку
             loadingIndicator.style.display = 'block';
-            loadingIndicator.textContent = '😺 Ищем котика...';
+            loadingIndicator.textContent = '🔍 Ищем самого патриотичного кота...';
             catImage.style.display = 'none';
             refreshButton.disabled = true;
             copyButton.disabled = true;
+            currentSource.textContent = 'поиск...';
             
-            // Список API для последовательной попытки
-            const apis = [
-                {
-                    url: 'https://cataas.com/cat',
-                    type: 'image',
-                    process: async (response) => {
-                        return response.url;
-                    }
-                },
-                {
-                    url: 'https://api.thecatapi.com/v1/images/search',
-                    type: 'json',
-                    process: async (response) => {
-                        const data = await response.json();
-                        return data[0]?.url;
-                    }
-                },
-                {
-                    url: 'https://random.cat/meow',
-                    type: 'json',
-                    process: async (response) => {
-                        const data = await response.json();
-                        return data.file;
-                    }
-                }
-            ];
-            
-            // Пробуем каждый API по очереди
-            for (let api of apis) {
-                try {
-                    const timestamp = new Date().getTime();
-                    const response = await fetch(`${api.url}?${timestamp}`, {
-                        method: 'GET',
-                        cache: 'no-cache'
+            // Собираем все URL в один массив с информацией об источнике
+            let allCats = [];
+            russianCatSources.forEach(source => {
+                source.urls.forEach(url => {
+                    allCats.push({
+                        url: url,
+                        sourceName: source.name
                     });
-                    
-                    if (!response.ok) continue;
-                    
-                    let imageUrl;
-                    if (api.type === 'json') {
-                        imageUrl = await api.process(response);
-                    } else {
-                        imageUrl = await api.process(response);
-                    }
-                    
-                    if (!imageUrl) continue;
-                    
-                    // Проверяем, загружается ли изображение
+                });
+            });
+            
+            // Перемешиваем массив для случайного порядка
+            allCats = shuffleArray(allCats);
+            
+            // Пробуем загружать котов по очереди
+            for (let cat of allCats) {
+                try {
+                    // Пытаемся загрузить изображение
                     const img = new Image();
                     await new Promise((resolve, reject) => {
-                        img.onload = resolve;
-                        img.onerror = reject;
-                        img.src = imageUrl;
+                        const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
+                        
+                        img.onload = () => {
+                            clearTimeout(timeout);
+                            resolve();
+                        };
+                        
+                        img.onerror = () => {
+                            clearTimeout(timeout);
+                            reject(new Error('Failed to load'));
+                        };
+                        
+                        // Добавляем timestamp для избежания кэширования
+                        img.src = cat.url + '?t=' + new Date().getTime();
                     });
                     
-                    // Если всё ок, показываем изображение
-                    currentImageUrl = imageUrl;
-                    catImage.src = imageUrl;
+                    // Если загрузилось успешно, показываем
+                    currentImageUrl = cat.url;
+                    catImage.src = img.src;
                     catImage.style.display = 'block';
                     loadingIndicator.style.display = 'none';
+                    currentSource.textContent = cat.sourceName;
                     lastUpdateTime = Date.now();
                     refreshButton.disabled = false;
                     copyButton.disabled = false;
                     return; // Успешно загрузили
                     
                 } catch (error) {
-                    console.log(`API ${api.url} не сработал, пробуем следующий...`);
+                    console.log(`Не удалось загрузить кота из ${cat.sourceName}, пробуем следующего...`);
                 }
             }
             
-            // Если все API не сработали
-            throw new Error('Все API недоступны');
+            // Если все попытки провалились, показываем сообщение об ошибке
+            loadingIndicator.textContent = '😿 Коты временно в командировке. Нажмите кнопку для повторной попытки.';
+            refreshButton.disabled = false;
+            copyButton.disabled = false;
+        }
+        
+        // Функция для перемешивания массива
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
         
         // Функция для обновления таймера
@@ -319,7 +414,7 @@
             
             timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
-            // Если время вышло, загружаем нового кота
+            // Если время вышло и кнопка не заблокирована, загружаем нового кота
             if (timeLeft <= 0 && !refreshButton.disabled) {
                 fetchRandomCat().catch(error => {
                     loadingIndicator.textContent = '😿 Ошибка загрузки. Нажмите кнопку для повтора.';
@@ -329,7 +424,7 @@
             }
         }
         
-        // Функция для принудительного обновления - ИСПРАВЛЕНО
+        // Функция для принудительного обновления
         async function forceRefresh() {
             if (refreshButton.disabled) return;
             
