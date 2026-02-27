@@ -10,55 +10,41 @@
             0% { 
                 opacity: 1; 
                 text-shadow: 0 0 30px red, 0 0 60px darkred;
-                transform: scale(1);
             }
             50% { 
                 opacity: 0.3; 
                 text-shadow: 0 0 60px red, 0 0 120px darkred;
-                transform: scale(1.1);
             }
             100% { 
                 opacity: 1; 
                 text-shadow: 0 0 30px red, 0 0 60px darkred;
-                transform: scale(1);
             }
         }
         
-        /* Стиль для огромной надписи */
+        /* Стиль для огромной надписи - ИСПРАВЛЕНО */
         .crazy-title {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 8vw;
+            top: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: clamp(2rem, 10vw, 8rem);
             font-weight: 900;
             color: red;
             text-transform: uppercase;
-            letter-spacing: 15px;
-            white-space: nowrap;
+            letter-spacing: 0.1em;
             z-index: 9999;
             pointer-events: none;
             animation: blink 0.5s infinite;
             font-family: 'Arial Black', 'Impact', sans-serif;
-            text-align: center;
-            width: 100%;
-            -webkit-text-stroke: 4px darkred;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 40px 0;
-            backdrop-filter: blur(5px);
-            border-top: 8px solid red;
-            border-bottom: 8px solid red;
+            -webkit-text-stroke: 2px darkred;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 0;
+            border-bottom: 4px solid red;
             box-shadow: 0 0 100px rgba(255, 0, 0, 0.8);
-        }
-        
-        /* Адаптация для мобильных */
-        @media (max-width: 768px) {
-            .crazy-title {
-                font-size: 15vw;
-                letter-spacing: 5px;
-                -webkit-text-stroke: 2px darkred;
-                padding: 20px 0;
-            }
+            line-height: 1.2;
+            white-space: normal;
+            word-wrap: break-word;
         }
         
         body {
@@ -72,19 +58,8 @@
             color: white;
             position: relative;
             overflow-x: hidden;
-        }
-        
-        /* Затемнение фона для лучшей читаемости надписи */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 9998;
-            pointer-events: none;
+            padding-top: 120px; /* Отступ для надписи */
+            box-sizing: border-box;
         }
         
         .container {
@@ -99,6 +74,7 @@
             margin: 20px;
             position: relative;
             z-index: 1;
+            width: 90%;
         }
         
         h1 {
@@ -147,6 +123,7 @@
         .loading {
             font-size: 1.2em;
             color: #fff;
+            padding: 20px;
         }
         
         .button {
@@ -161,6 +138,7 @@
             margin: 10px;
             position: relative;
             z-index: 10000;
+            pointer-events: auto;
         }
         
         .button:hover {
@@ -179,14 +157,30 @@
             opacity: 0.8;
         }
         
+        .footer a {
+            color: white;
+            pointer-events: auto;
+        }
+        
         .error {
             color: #ff6b6b;
             padding: 20px;
         }
         
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+            
+            .crazy-title {
+                font-size: clamp(1.5rem, 8vw, 4rem);
+                padding: 10px 0;
+                -webkit-text-stroke: 1px darkred;
+            }
+            
             .container {
                 padding: 20px;
+                margin: 10px;
             }
             
             h1 {
@@ -196,7 +190,7 @@
     </style>
 </head>
 <body>
-    <!-- Огромная мерцающая красная надпись -->
+    <!-- Огромная мерцающая красная надпись - ИСПРАВЛЕНО позиционирование -->
     <div class="crazy-title">КОТЫ ЕБЛАНЧИКИ 3000</div>
     
     <div class="container">
@@ -205,150 +199,186 @@
         
         <div class="cat-image-container">
             <img id="catImage" class="cat-image" src="" alt="Случайный кот" style="display: none;">
-            <div id="loadingIndicator" class="loading">Загружаем кота...</div>
+            <div id="loadingIndicator" class="loading">😺 Ищем котика...</div>
         </div>
         
         <div class="timer-info">
-            <div id="nextUpdateText">Следующий кот через:</div>
+            <div>Следующий кот через:</div>
             <div id="timer" class="time-left">59:59</div>
         </div>
         
-        <button id="refreshButton" class="button" onclick="forceRefresh()">🔄 Хочу кота сейчас</button>
-        <button id="copyButton" class="button" onclick="copyImageUrl()">🔗 Скопировать ссылку</button>
+        <button id="refreshButton" class="button">🔄 Хочу кота сейчас</button>
+        <button id="copyButton" class="button">🔗 Скопировать ссылку</button>
         
         <div class="footer">
-            <p>Изображения предоставлены <a href="https://cataas.com" target="_blank" style="color: white;">CATAAS</a></p>
+            <p>Изображения предоставлены <a href="https://cataas.com" target="_blank">CATAAS</a> и <a href="https://thecatapi.com" target="_blank">TheCatAPI</a></p>
         </div>
     </div>
 
     <script>
         let countdownInterval;
-        let timeLeft = 3600; // 1 час в секундах
         let lastUpdateTime = Date.now();
         let currentImageUrl = '';
+        let refreshButton = document.getElementById('refreshButton');
+        let copyButton = document.getElementById('copyButton');
+        let catImage = document.getElementById('catImage');
+        let loadingIndicator = document.getElementById('loadingIndicator');
+        let timerDisplay = document.getElementById('timer');
         
-        // Функция для получения случайного кота
+        // Функция для получения случайного кота - ИСПРАВЛЕНО
         async function fetchRandomCat() {
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const catImage = document.getElementById('catImage');
-            const refreshButton = document.getElementById('refreshButton');
-            
             // Показываем загрузку
             loadingIndicator.style.display = 'block';
+            loadingIndicator.textContent = '😺 Ищем котика...';
             catImage.style.display = 'none';
             refreshButton.disabled = true;
+            copyButton.disabled = true;
             
-            try {
-                // Используем API cataas.com для получения случайного кота
-                // Добавляем параметр timestamp, чтобы избежать кэширования
-                const timestamp = new Date().getTime();
-                
-                // Сначала получаем информацию о коте
-                const response = await fetch(`https://cataas.com/cat?timestamp=${timestamp}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'image/jpeg',
+            // Список API для последовательной попытки
+            const apis = [
+                {
+                    url: 'https://cataas.com/cat',
+                    type: 'image',
+                    process: async (response) => {
+                        return response.url;
                     }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                },
+                {
+                    url: 'https://api.thecatapi.com/v1/images/search',
+                    type: 'json',
+                    process: async (response) => {
+                        const data = await response.json();
+                        return data[0]?.url;
+                    }
+                },
+                {
+                    url: 'https://random.cat/meow',
+                    type: 'json',
+                    process: async (response) => {
+                        const data = await response.json();
+                        return data.file;
+                    }
                 }
-                
-                // Получаем URL изображения
-                const imageUrl = response.url;
-                currentImageUrl = imageUrl;
-                
-                // Устанавливаем изображение
-                catImage.src = imageUrl;
-                
-                // Ждем загрузки изображения
-                await new Promise((resolve, reject) => {
-                    catImage.onload = resolve;
-                    catImage.onerror = reject;
-                });
-                
-                // Показываем изображение
-                catImage.style.display = 'block';
-                loadingIndicator.style.display = 'none';
-                
-                // Обновляем время последнего обновления
-                lastUpdateTime = Date.now();
-                
-            } catch (error) {
-                console.error('Ошибка при загрузке кота:', error);
-                loadingIndicator.innerHTML = '😿 Не удалось загрузить кота. Пробуем снова...';
-                
-                // Пробуем альтернативный API
+            ];
+            
+            // Пробуем каждый API по очереди
+            for (let api of apis) {
                 try {
-                    const backupResponse = await fetch(`https://api.thecatapi.com/v1/images/search?timestamp=${timestamp}`);
-                    const backupData = await backupResponse.json();
+                    const timestamp = new Date().getTime();
+                    const response = await fetch(`${api.url}?${timestamp}`, {
+                        method: 'GET',
+                        cache: 'no-cache'
+                    });
                     
-                    if (backupData && backupData[0] && backupData[0].url) {
-                        currentImageUrl = backupData[0].url;
-                        catImage.src = currentImageUrl;
-                        
-                        await new Promise((resolve, reject) => {
-                            catImage.onload = resolve;
-                            catImage.onerror = reject;
-                        });
-                        
-                        catImage.style.display = 'block';
-                        loadingIndicator.style.display = 'none';
+                    if (!response.ok) continue;
+                    
+                    let imageUrl;
+                    if (api.type === 'json') {
+                        imageUrl = await api.process(response);
                     } else {
-                        throw new Error('Не удалось получить изображение');
+                        imageUrl = await api.process(response);
                     }
-                } catch (backupError) {
-                    loadingIndicator.innerHTML = '😿 Ошибка загрузки. Нажмите "Хочу кота сейчас" для повторной попытки.';
+                    
+                    if (!imageUrl) continue;
+                    
+                    // Проверяем, загружается ли изображение
+                    const img = new Image();
+                    await new Promise((resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = reject;
+                        img.src = imageUrl;
+                    });
+                    
+                    // Если всё ок, показываем изображение
+                    currentImageUrl = imageUrl;
+                    catImage.src = imageUrl;
+                    catImage.style.display = 'block';
+                    loadingIndicator.style.display = 'none';
+                    lastUpdateTime = Date.now();
+                    refreshButton.disabled = false;
+                    copyButton.disabled = false;
+                    return; // Успешно загрузили
+                    
+                } catch (error) {
+                    console.log(`API ${api.url} не сработал, пробуем следующий...`);
                 }
-            } finally {
-                refreshButton.disabled = false;
             }
+            
+            // Если все API не сработали
+            throw new Error('Все API недоступны');
         }
         
         // Функция для обновления таймера
         function updateTimer() {
             const now = Date.now();
             const elapsedSeconds = Math.floor((now - lastUpdateTime) / 1000);
-            timeLeft = Math.max(0, 3600 - elapsedSeconds);
+            const timeLeft = Math.max(0, 3600 - elapsedSeconds);
             
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
             
-            const timerDisplay = document.getElementById('timer');
             timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
             // Если время вышло, загружаем нового кота
-            if (timeLeft <= 0) {
-                fetchRandomCat();
+            if (timeLeft <= 0 && !refreshButton.disabled) {
+                fetchRandomCat().catch(error => {
+                    loadingIndicator.textContent = '😿 Ошибка загрузки. Нажмите кнопку для повтора.';
+                    refreshButton.disabled = false;
+                    copyButton.disabled = false;
+                });
             }
         }
         
-        // Функция для принудительного обновления
-        function forceRefresh() {
-            fetchRandomCat();
+        // Функция для принудительного обновления - ИСПРАВЛЕНО
+        async function forceRefresh() {
+            if (refreshButton.disabled) return;
+            
+            try {
+                await fetchRandomCat();
+            } catch (error) {
+                loadingIndicator.textContent = '😿 Ошибка загрузки. Попробуйте еще раз.';
+                refreshButton.disabled = false;
+                copyButton.disabled = false;
+            }
         }
         
         // Функция для копирования URL изображения
         async function copyImageUrl() {
-            if (currentImageUrl) {
-                try {
-                    await navigator.clipboard.writeText(currentImageUrl);
-                    const copyButton = document.getElementById('copyButton');
-                    const originalText = copyButton.textContent;
-                    copyButton.textContent = '✅ Скопировано!';
-                    setTimeout(() => {
-                        copyButton.textContent = originalText;
-                    }, 2000);
-                } catch (err) {
-                    alert('Не удалось скопировать ссылку');
-                }
+            if (!currentImageUrl || copyButton.disabled) return;
+            
+            try {
+                await navigator.clipboard.writeText(currentImageUrl);
+                const originalText = copyButton.textContent;
+                copyButton.textContent = '✅ Скопировано!';
+                setTimeout(() => {
+                    copyButton.textContent = '🔗 Скопировать ссылку';
+                }, 2000);
+            } catch (err) {
+                alert('Не удалось скопировать ссылку');
             }
         }
         
+        // Назначаем обработчики событий
+        refreshButton.onclick = forceRefresh;
+        copyButton.onclick = copyImageUrl;
+        
+        // Обработка ошибок изображения
+        catImage.addEventListener('error', function() {
+            this.style.display = 'none';
+            loadingIndicator.style.display = 'block';
+            loadingIndicator.textContent = '😿 Ошибка загрузки. Нажмите кнопку для повтора.';
+            refreshButton.disabled = false;
+            copyButton.disabled = false;
+        });
+        
         // Запускаем при загрузке страницы
         window.addEventListener('load', () => {
-            fetchRandomCat();
+            // Загружаем первого кота
+            fetchRandomCat().catch(error => {
+                loadingIndicator.textContent = '😿 Ошибка загрузки. Нажмите кнопку для повтора.';
+                refreshButton.disabled = false;
+                copyButton.disabled = false;
+            });
             
             // Запускаем таймер
             countdownInterval = setInterval(updateTimer, 1000);
@@ -359,12 +389,6 @@
             if (countdownInterval) {
                 clearInterval(countdownInterval);
             }
-        });
-        
-        // Обработка ошибок изображения
-        document.getElementById('catImage').addEventListener('error', function() {
-            this.style.display = 'none';
-            document.getElementById('loadingIndicator').innerHTML = '😿 Ошибка загрузки изображения';
         });
     </script>
 </body>
