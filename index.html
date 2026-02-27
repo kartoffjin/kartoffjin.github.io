@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ПатриоКОТ 3000</title>
+    <title>Матюгальник 3000</title>
     <style>
-        /* Анимация мерцания */
-        @keyframes blink {
+        /* Анимация для мерцающей надписи */
+        @keyframes titleBlink {
             0% { 
                 opacity: 1; 
                 text-shadow: 0 0 30px red, 0 0 60px darkred;
+                transform: rotate(0deg);
             }
             50% { 
                 opacity: 0.3; 
@@ -18,472 +19,399 @@
             100% { 
                 opacity: 1; 
                 text-shadow: 0 0 30px red, 0 0 60px darkred;
+                transform: rotate(0deg);
             }
         }
         
-        /* Триколор-фон */
-        @keyframes russianFlag {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
+        /* Анимация сальто */
+        @keyframes somersault {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        /* Стиль для огромной надписи */
-        .crazy-title {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: clamp(2rem, 10vw, 8rem);
-            font-weight: 900;
-            color: red;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            z-index: 9999;
-            pointer-events: none;
-            animation: blink 0.5s infinite;
-            font-family: 'Arial Black', 'Impact', sans-serif;
-            -webkit-text-stroke: 2px darkred;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px 0;
-            border-bottom: 4px solid red;
-            box-shadow: 0 0 100px rgba(255, 0, 0, 0.8);
-            line-height: 1.2;
-            word-wrap: break-word;
+        /* Анимация пульсации для матерного слова */
+        @keyframes nastyPulse {
+            0% { 
+                transform: scale(1) translateX(0);
+                text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff, 0 0 60px #ff0000;
+            }
+            25% { 
+                transform: scale(1.5) translateX(30px);
+                text-shadow: 0 0 30px #ff0000, 0 0 60px #ff00ff, 0 0 90px #00ff00;
+            }
+            50% { 
+                transform: scale(0.8) translateX(-30px);
+                text-shadow: 0 0 40px #00ffff, 0 0 80px #ff0000, 0 0 120px #ff00ff;
+            }
+            75% { 
+                transform: scale(1.3) translateX(20px);
+                text-shadow: 0 0 50px #ff00ff, 0 0 100px #00ff00, 0 0 150px #ffff00;
+            }
+            100% { 
+                transform: scale(1) translateX(0);
+                text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff, 0 0 60px #ff0000;
+            }
         }
         
         body {
             margin: 0;
             min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            font-family: 'Arial Black', 'Impact', sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            color: white;
-            position: relative;
+            justify-content: center;
             overflow-x: hidden;
-            padding-top: 120px;
-            box-sizing: border-box;
-            /* Патриотичный градиент */
-            background: linear-gradient(135deg, 
-                #ffffff 0%, 
-                #ffffff 20%, 
-                #0032a0 20%, 
-                #0032a0 40%, 
-                #da291c 40%, 
-                #da291c 60%, 
-                #0032a0 60%, 
-                #0032a0 80%, 
-                #ffffff 80%, 
-                #ffffff 100%);
-            background-size: 300% 300%;
-            animation: russianFlag 20s ease infinite;
         }
         
-        /* Затемнение фона для лучшей читаемости */
-        body::before {
-            content: '';
+        /* Заголовок */
+        .title {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 0;
-            pointer-events: none;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 900;
+            color: red;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            z-index: 9999;
+            cursor: pointer;
+            animation: titleBlink 0.5s infinite;
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            -webkit-text-stroke: 2px darkred;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 40px;
+            border-radius: 50px;
+            border: 3px solid red;
+            box-shadow: 0 0 100px rgba(255, 0, 0, 0.8);
+            white-space: nowrap;
+            transition: all 0.3s ease;
         }
         
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            max-width: 600px;
-            margin: 20px;
-            position: relative;
-            z-index: 1;
-            width: 90%;
+        .title.somersault {
+            animation: somersault 0.8s ease-in-out;
         }
         
-        /* Патриотичный заголовок */
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            background: linear-gradient(45deg, #ffffff, #0032a0, #da291c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
+        .title:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 0 150px rgba(255, 0, 0, 1);
         }
         
-        .cat-image-container {
-            margin: 30px 0;
+        /* Контейнер для матерного слова */
+        .swear-container {
+            width: 100%;
             min-height: 300px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .cat-image {
-            max-width: 100%;
-            max-height: 400px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .cat-image:hover {
-            transform: scale(1.02);
-        }
-        
-        .timer-info {
-            font-size: 1.2em;
-            background: rgba(0, 50, 160, 0.3);
-            backdrop-filter: blur(5px);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid rgba(218, 41, 28, 0.5);
-        }
-        
-        .time-left {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        
-        .loading {
-            font-size: 1.2em;
-            color: #fff;
+            justify-content: center;
+            margin: 100px 0 50px 0;
             padding: 20px;
+            box-sizing: border-box;
         }
         
-        .button {
-            background: linear-gradient(45deg, #0032a0, #da291c);
-            border: 2px solid white;
+        /* Само матерное слово */
+        .swear-word {
+            font-size: clamp(3rem, 15vw, 10rem);
+            font-weight: 900;
+            text-transform: uppercase;
             color: white;
-            padding: 12px 30px;
-            font-size: 1.1em;
-            border-radius: 25px;
+            text-align: center;
+            word-break: break-word;
+            max-width: 90%;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            animation: nastyPulse 2s infinite ease-in-out;
+            font-family: 'Arial Black', 'Impact', 'Comic Sans MS', cursive;
+        }
+        
+        /* Кнопка */
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .new-swear-button {
+            background: linear-gradient(45deg, #ff0000, #ff6600, #ff00ff);
+            border: none;
+            color: white;
+            padding: 25px 60px;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: bold;
+            border-radius: 60px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 10px;
-            position: relative;
-            z-index: 10000;
-            pointer-events: auto;
-            font-weight: bold;
+            border: 4px solid yellow;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 3px;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
+            font-family: 'Arial Black', 'Impact', sans-serif;
         }
         
-        .button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        .new-swear-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 80px rgba(255, 0, 0, 1);
+            border-color: white;
         }
         
-        .button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .new-swear-button:active {
+            transform: scale(0.95);
         }
         
-        .source-info {
-            margin-top: 15px;
-            font-size: 0.9em;
-            opacity: 0.9;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px;
-            border-radius: 5px;
-        }
-        
-        .source-info a {
-            color: #ffd700;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .source-info a:hover {
-            text-decoration: underline;
-        }
-        
-        .footer {
+        /* Счетчик слов */
+        .counter {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
             margin-top: 20px;
-            font-size: 0.9em;
-            opacity: 0.8;
+            font-family: Arial, sans-serif;
         }
         
-        .footer a {
-            color: white;
-            pointer-events: auto;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
+        /* Инструкция */
+        .hint {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-family: Arial, sans-serif;
         }
         
         @media (max-width: 768px) {
-            body {
-                padding-top: 100px;
+            .title {
+                font-size: clamp(1.5rem, 6vw, 3rem);
+                padding: 10px 20px;
+                white-space: normal;
+                text-align: center;
+                width: 90%;
             }
             
-            .crazy-title {
-                font-size: clamp(1.5rem, 8vw, 4rem);
-                padding: 10px 0;
-                -webkit-text-stroke: 1px darkred;
+            .swear-word {
+                font-size: clamp(2rem, 12vw, 5rem);
             }
             
-            .container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            h1 {
-                font-size: 2em;
+            .new-swear-button {
+                padding: 15px 30px;
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Огромная мерцающая красная надпись -->
-    <div class="crazy-title">КОТЫ ЕБЛАНЧИКИ 3000</div>
+    <!-- Заголовок -->
+    <div class="title" id="mainTitle" onclick="doSomersault()">
+        МАТЮГАЛЬНИК 3000
+    </div>
     
-    <div class="container">
-        <h1>🐱 ПАТРИОКОТ 🐱</h1>
-        <p>Только лучшие российские коты!</p>
-        
-        <div class="cat-image-container">
-            <img id="catImage" class="cat-image" src="" alt="Патриотичный кот" style="display: none;">
-            <div id="loadingIndicator" class="loading">🔍 Ищем самого патриотичного кота...</div>
+    <!-- Контейнер с матерным словом -->
+    <div class="swear-container">
+        <div class="swear-word" id="swearWord" onclick="copySwearWord()">
+            ХУЙ
         </div>
-        
-        <div class="timer-info">
-            <div>🇷🇺 Следующий кот через 🇷🇺</div>
-            <div id="timer" class="time-left">59:59</div>
-        </div>
-        
-        <button id="refreshButton" class="button">🔄 Хочу кота сейчас</button>
-        <button id="copyButton" class="button">🔗 Скопировать ссылку</button>
-        
-        <div id="sourceDisplay" class="source-info">
-            Источник: <span id="currentSource">поиск...</span>
-        </div>
-        
-        <div class="footer">
-            <p>Патриотичные коты из российских источников 🇷🇺</p>
-        </div>
+    </div>
+    
+    <!-- Кнопка для нового слова -->
+    <div class="button-container">
+        <button class="new-swear-button" id="newSwearButton">
+            🔞 НОВЫЙ МАТЮК 🔞
+        </button>
+    </div>
+    
+    <!-- Счетчик -->
+    <div class="counter" id="counter">
+        В арсенале: <span id="wordCount">69</span> матюков
+    </div>
+    
+    <!-- Подсказка -->
+    <div class="hint">
+        👆 Нажми на слово - скопируешь в буфер
     </div>
 
     <script>
-        let countdownInterval;
-        let lastUpdateTime = Date.now();
-        let currentImageUrl = '';
-        let refreshButton = document.getElementById('refreshButton');
-        let copyButton = document.getElementById('copyButton');
-        let catImage = document.getElementById('catImage');
-        let loadingIndicator = document.getElementById('loadingIndicator');
-        let timerDisplay = document.getElementById('timer');
-        let currentSource = document.getElementById('currentSource');
-        
-        // Российские источники котов
-        const russianCatSources = [
-            {
-                name: "Яндекс.Диск (Котики)",
-                type: "direct",
-                urls: [
-                    "https://avatars.mds.yandex.net/get-zen_doc/5235967/pub_624d5f5cb3f7695a0aae3e44_624d676f69fe6c7ad249f6e8/scale_1200",
-                    "https://avatars.mds.yandex.net/get-zen_doc/1881605/pub_5f2a52d7e719fb28e83ec896_5f2a5338b7c0642ffd594491/scale_1200",
-                    "https://avatars.mds.yandex.net/get-zen_doc/3955021/pub_606ac07b1f81d5454f4b1e16_606ac115ad2eec07e86b30da/scale_1200",
-                    "https://avatars.mds.yandex.net/get-zen_doc/1875070/pub_5d56f23ccb06a400ad45b08c_5d56f24f222d2c00ad403d93/scale_1200",
-                    "https://avatars.mds.yandex.net/get-zen_doc/15961/pub_5c0e6d62269da700aa5adc57_5c0e6d8c293fc300aa52a906/scale_1200",
-                    "https://avatars.mds.yandex.net/get-zen_doc/1866802/pub_5d34e9e3fc31cd00ad2a97e1_5d34e9f8d09ed200adc56c72/scale_1200",
-                    "https://avatars.mds.yandex.net/get-zen_doc/171870/pub_5c8cbfd6e8ba2300b3b228e1_5c8ccf07f4d1a600b3ae76dd/scale_1200"
-                ]
-            },
-            {
-                name: "Моспитомец",
-                type: "mos",
-                urls: [
-                    "https://www.mos.ru/upload/newsfeed/newsfeed/mspitomec(1).jpg",
-                    "https://www.mos.ru/upload/newsfeed/newsfeed/mspitomec-koshki.jpg",
-                    "https://www.mos.ru/upload/newsfeed/newsfeed/prijut-koshki(1).jpg"
-                ]
-            },
-            {
-                name: "ВКонтакте (Котики)",
-                type: "vk",
-                urls: [
-                    "https://sun9-78.userapi.com/impg/PgEEgMOJ__q8GME7gGRWgC5mTtwES3O8E5xL6A/JjzyM8eBfM4.jpg?size=604x402&quality=95&sign=3b1b7b1b7b1b7b1b7b1b7b1b7b1b7b1b&type=album",
-                    "https://sun9-32.userapi.com/impg/Y7hxIxRwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw/6J9rX9rX9rX9rX9rX9rX9rX9rX9rX9rX9rX9rX.jpg?size=604x402&quality=95&sign=2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c&type=album"
-                ]
-            }
+        // Массив матерных слов
+        const swearWords = [
+            // Классика
+            "ХУЙ", "ПИЗДА", "ЕБЛАН", "ГАНДОН", "МУДАК", "УЕБАН", 
+            "ДОЛБОЁБ", "ЗАЛУПА", "МАНДА", "ШЛЮХА", "БЛЯДЬ", 
+            "ПИДОР", "РАК", "ЧМО", "ЛОХ", "СОПЛЯ", "ГАВНО",
+            
+            // Составные
+            "ХУЕСОС", "ПИЗДОБОЛ", "ЕБАНЬКО", "ЗАПИЗДЕНЬ", 
+            "МУДОЁБ", "УЁБИЩЕ", "ДОЛБОПИЗД", "ХУЕМОРДА",
+            "ПИЗДЮК", "ГАНДОНИНА", "ШМАРА", "КОЗЁЛ",
+            
+            // Оскорбления
+            "НИЩЕБРОД", "ЧЕРТ", "ВЫБЛЫДОК", "УРОД", "ДЕБИЛ",
+            "ИДИОТ", "КРЕТИН", "СКОТИНА", "СВОЛОЧЬ", "ТВАРЬ",
+            "МРАЗЬ", "ГАД", "ПАДАЛЬ", "ГНИДА", "ЗМЕЯ",
+            
+            // Творческие
+            "ХУЙЛО", "ПИЗДОСТРАДАЛЕЦ", "МАНДАВОШКА", "ЗАЛУПИНСК",
+            "ГОВНОМЕС", "ХУЕВАТИНА", "ПИЗДОПРОЁБЩИК", "ДРОЧИЛА",
+            "ОНАНИСТ", "РУКОБЛУД", "СКВЕРНОСЛОВ", "МАТЕМАТИК",
+            
+            // Длинные
+            "ЕБАНИНА", "ХУЕТА", "ПИЗДЕЦ", "ЗАПИЗДЯЙ", "ПЕРЕПИЗДЫШ",
+            "НЕДОНОСОК", "ВЫСЕРЫШ", "ОТБРОС", "ПОДОНОК",
+            
+            // Прилагательные
+            "ХУЁВЫЙ", "ПИЗДАТЫЙ", "ЗАПИЗДЕННЫЙ", "ОБОСРАННЫЙ",
+            
+            // Глаголы
+            "НАХУЯРИЛ", "ОБЪЕБАЛ", "ЗАЛУПИЛСЯ", "РАСПИЗДЯЙНИЧАЛ",
+            
+            // Эпичные
+            "ХУЯКНУТЬ", "ПИЗДАНУТЬ", "ЗАХУЯРИТЬ", "НАПИЗДЕТЬ",
+            "СПИЗДИТЬ", "УЁБЫВАТЬ", "ЗАЕБАТЬ", "ДОЕБАТЬСЯ",
+            
+            // Люди
+            "ПИЗДОГЛАЗЫЙ", "ХУЕГУБЫЙ", "МУДОЁБИНА", "ГАНДОНЧИК",
+            
+            // Животные
+            "ПЁС", "ПСИНА", "КОБЕЛЬ", "БАРАН", "ОСЁЛ",
+            
+            // Еда
+            "ХУЙНЯ", "ПИЗДЮЛИНА", "ЗАЛУПА ПОДЗАЛУПНАЯ"
         ];
         
-        // Функция для получения случайного кота из российских источников
-        async function fetchRandomCat() {
-            // Показываем загрузку
-            loadingIndicator.style.display = 'block';
-            loadingIndicator.textContent = '🔍 Ищем самого патриотичного кота...';
-            catImage.style.display = 'none';
-            refreshButton.disabled = true;
-            copyButton.disabled = true;
-            currentSource.textContent = 'поиск...';
+        let currentSwearIndex = 0;
+        let titleElement = document.getElementById('mainTitle');
+        let swearElement = document.getElementById('swearWord');
+        
+        // Функция для получения случайного матерного слова
+        function getRandomSwearWord() {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * swearWords.length);
+            } while (randomIndex === currentSwearIndex && swearWords.length > 1);
             
-            // Собираем все URL в один массив с информацией об источнике
-            let allCats = [];
-            russianCatSources.forEach(source => {
-                source.urls.forEach(url => {
-                    allCats.push({
-                        url: url,
-                        sourceName: source.name
-                    });
-                });
-            });
-            
-            // Перемешиваем массив для случайного порядка
-            allCats = shuffleArray(allCats);
-            
-            // Пробуем загружать котов по очереди
-            for (let cat of allCats) {
-                try {
-                    // Пытаемся загрузить изображение
-                    const img = new Image();
-                    await new Promise((resolve, reject) => {
-                        const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
-                        
-                        img.onload = () => {
-                            clearTimeout(timeout);
-                            resolve();
-                        };
-                        
-                        img.onerror = () => {
-                            clearTimeout(timeout);
-                            reject(new Error('Failed to load'));
-                        };
-                        
-                        // Добавляем timestamp для избежания кэширования
-                        img.src = cat.url + '?t=' + new Date().getTime();
-                    });
-                    
-                    // Если загрузилось успешно, показываем
-                    currentImageUrl = cat.url;
-                    catImage.src = img.src;
-                    catImage.style.display = 'block';
-                    loadingIndicator.style.display = 'none';
-                    currentSource.textContent = cat.sourceName;
-                    lastUpdateTime = Date.now();
-                    refreshButton.disabled = false;
-                    copyButton.disabled = false;
-                    return; // Успешно загрузили
-                    
-                } catch (error) {
-                    console.log(`Не удалось загрузить кота из ${cat.sourceName}, пробуем следующего...`);
-                }
-            }
-            
-            // Если все попытки провалились, показываем сообщение об ошибке
-            loadingIndicator.textContent = '😿 Коты временно в командировке. Нажмите кнопку для повторной попытки.';
-            refreshButton.disabled = false;
-            copyButton.disabled = false;
+            currentSwearIndex = randomIndex;
+            return swearWords[randomIndex];
         }
         
-        // Функция для перемешивания массива
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
+        // Обновление слова на странице
+        function updateSwearWord() {
+            const newWord = getRandomSwearWord();
+            swearElement.textContent = newWord;
+            
+            // Добавляем небольшую встряску при обновлении
+            swearElement.style.animation = 'none';
+            swearElement.offsetHeight; // Форсируем reflow
+            swearElement.style.animation = 'nastyPulse 2s infinite ease-in-out';
         }
         
-        // Функция для обновления таймера
-        function updateTimer() {
-            const now = Date.now();
-            const elapsedSeconds = Math.floor((now - lastUpdateTime) / 1000);
-            const timeLeft = Math.max(0, 3600 - elapsedSeconds);
+        // Функция сальто для заголовка
+        function doSomersault() {
+            titleElement.classList.add('somersault');
             
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
+            // Убираем класс после завершения анимации
+            setTimeout(() => {
+                titleElement.classList.remove('somersault');
+            }, 800);
             
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            // Если время вышло и кнопка не заблокирована, загружаем нового кота
-            if (timeLeft <= 0 && !refreshButton.disabled) {
-                fetchRandomCat().catch(error => {
-                    loadingIndicator.textContent = '😿 Ошибка загрузки. Нажмите кнопку для повтора.';
-                    refreshButton.disabled = false;
-                    copyButton.disabled = false;
-                });
-            }
+            // Добавляем эффект при сальто
+            titleElement.style.transform = 'translateX(-50%) scale(1.2)';
+            setTimeout(() => {
+                titleElement.style.transform = 'translateX(-50%) scale(1)';
+            }, 400);
         }
         
-        // Функция для принудительного обновления
-        async function forceRefresh() {
-            if (refreshButton.disabled) return;
+        // Функция копирования слова в буфер обмена
+        function copySwearWord() {
+            const currentWord = swearElement.textContent;
             
-            try {
-                await fetchRandomCat();
-            } catch (error) {
-                loadingIndicator.textContent = '😿 Ошибка загрузки. Попробуйте еще раз.';
-                refreshButton.disabled = false;
-                copyButton.disabled = false;
-            }
-        }
-        
-        // Функция для копирования URL изображения
-        async function copyImageUrl() {
-            if (!currentImageUrl || copyButton.disabled) return;
-            
-            try {
-                await navigator.clipboard.writeText(currentImageUrl);
-                const originalText = copyButton.textContent;
-                copyButton.textContent = '✅ Скопировано!';
+            navigator.clipboard.writeText(currentWord).then(() => {
+                // Визуальный эффект при копировании
+                swearElement.style.transform = 'scale(1.2)';
+                swearElement.style.transition = 'transform 0.2s';
+                
                 setTimeout(() => {
-                    copyButton.textContent = '🔗 Скопировать ссылку';
-                }, 2000);
-            } catch (err) {
-                alert('Не удалось скопировать ссылку');
-            }
+                    swearElement.style.transform = 'scale(1)';
+                    setTimeout(() => {
+                        swearElement.style.transition = '';
+                    }, 200);
+                }, 200);
+                
+                // Показываем всплывашку
+                showNotification(`"${currentWord}" скопировано!`);
+            }).catch(err => {
+                console.error('Ошибка копирования:', err);
+                alert('Не удалось скопировать. Скажи: ' + currentWord);
+            });
+        }
+        
+        // Простая всплывашка
+        function showNotification(text) {
+            const notification = document.createElement('div');
+            notification.textContent = text;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 30px;
+                font-family: Arial, sans-serif;
+                z-index: 10000;
+                border: 2px solid gold;
+                animation: fadeOut 2s forwards;
+            `;
+            
+            // Добавляем стиль для анимации
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    0% { opacity: 1; bottom: 20px; }
+                    70% { opacity: 1; bottom: 20px; }
+                    100% { opacity: 0; bottom: -50px; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+                document.head.removeChild(style);
+            }, 2000);
         }
         
         // Назначаем обработчики событий
-        refreshButton.onclick = forceRefresh;
-        copyButton.onclick = copyImageUrl;
+        document.getElementById('newSwearButton').addEventListener('click', updateSwearWord);
         
-        // Обработка ошибок изображения
-        catImage.addEventListener('error', function() {
-            this.style.display = 'none';
-            loadingIndicator.style.display = 'block';
-            loadingIndicator.textContent = '😿 Ошибка загрузки. Нажмите кнопку для повтора.';
-            refreshButton.disabled = false;
-            copyButton.disabled = false;
-        });
+        // Обновляем счетчик слов
+        document.getElementById('wordCount').textContent = swearWords.length;
         
-        // Запускаем при загрузке страницы
+        // Инициализация
         window.addEventListener('load', () => {
-            // Загружаем первого кота
-            fetchRandomCat().catch(error => {
-                loadingIndicator.textContent = '😿 Ошибка загрузки. Нажмите кнопку для повтора.';
-                refreshButton.disabled = false;
-                copyButton.disabled = false;
-            });
-            
-            // Запускаем таймер
-            countdownInterval = setInterval(updateTimer, 1000);
+            // Выбираем случайное слово при загрузке
+            currentSwearIndex = Math.floor(Math.random() * swearWords.length);
+            swearElement.textContent = swearWords[currentSwearIndex];
         });
         
-        // Очищаем интервал при закрытии страницы
-        window.addEventListener('beforeunload', () => {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
+        // Добавляем обработку клавиши пробел для нового слова
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !e.repeat) {
+                e.preventDefault();
+                updateSwearWord();
+                
+                // Визуальный эффект на кнопке
+                const button = document.getElementById('newSwearButton');
+                button.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    button.style.transform = '';
+                }, 200);
             }
+        });
+        
+        // Добавляем обработку клика по слову
+        swearElement.addEventListener('click', copySwearWord);
+        
+        // Скрываем контекстное меню на слове (чтобы не мешало)
+        swearElement.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            copySwearWord();
         });
     </script>
 </body>
