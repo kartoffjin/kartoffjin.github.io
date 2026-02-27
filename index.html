@@ -9,203 +9,447 @@
         @keyframes titleBlink {
             0% { 
                 opacity: 1; 
-                text-shadow: 0 0 30px red, 0 0 60px darkred;
-                transform: rotate(0deg);
+                text-shadow: 0 0 30px red, 0 0 60px darkred, 0 0 90px orange;
+                color: #ff0000;
             }
-            50% { 
-                opacity: 0.3; 
-                text-shadow: 0 0 60px red, 0 0 120px darkred;
+            33% { 
+                opacity: 0.8; 
+                text-shadow: 0 0 40px #ff00ff, 0 0 80px #00ffff, 0 0 120px yellow;
+                color: #ff00ff;
+            }
+            66% { 
+                opacity: 0.6; 
+                text-shadow: 0 0 50px #00ff00, 0 0 100px #ff0000, 0 0 150px blue;
+                color: #00ff00;
             }
             100% { 
                 opacity: 1; 
-                text-shadow: 0 0 30px red, 0 0 60px darkred;
-                transform: rotate(0deg);
+                text-shadow: 0 0 30px red, 0 0 60px darkred, 0 0 90px orange;
+                color: #ff0000;
             }
         }
         
         /* Анимация сальто */
         @keyframes somersault {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: translateX(-50%) rotate(0deg) scale(1); }
+            25% { transform: translateX(-50%) rotate(90deg) scale(1.3); }
+            50% { transform: translateX(-50%) rotate(180deg) scale(0.8); }
+            75% { transform: translateX(-50%) rotate(270deg) scale(1.3); }
+            100% { transform: translateX(-50%) rotate(360deg) scale(1); }
         }
         
         /* Анимация пульсации для матерного слова */
         @keyframes nastyPulse {
             0% { 
-                transform: scale(1) translateX(0);
-                text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff, 0 0 60px #ff0000;
+                transform: scale(1) translateX(0) skew(0deg);
+                text-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff, 0 0 90px #ff0000, 0 0 120px yellow;
             }
-            25% { 
-                transform: scale(1.5) translateX(30px);
-                text-shadow: 0 0 30px #ff0000, 0 0 60px #ff00ff, 0 0 90px #00ff00;
+            20% { 
+                transform: scale(1.4) translateX(40px) skew(-10deg);
+                text-shadow: 0 0 40px #ff0000, 0 0 80px #ff00ff, 0 0 120px #00ff00, 0 0 160px blue;
             }
-            50% { 
-                transform: scale(0.8) translateX(-30px);
-                text-shadow: 0 0 40px #00ffff, 0 0 80px #ff0000, 0 0 120px #ff00ff;
+            40% { 
+                transform: scale(0.7) translateX(-40px) skew(10deg);
+                text-shadow: 0 0 50px #00ffff, 0 0 100px #ff0000, 0 0 150px #ff00ff, 0 0 200px green;
             }
-            75% { 
-                transform: scale(1.3) translateX(20px);
-                text-shadow: 0 0 50px #ff00ff, 0 0 100px #00ff00, 0 0 150px #ffff00;
+            60% { 
+                transform: scale(1.5) translateX(30px) skew(-5deg);
+                text-shadow: 0 0 60px #ff00ff, 0 0 120px #00ff00, 0 0 180px #ffff00, 0 0 240px red;
+            }
+            80% { 
+                transform: scale(0.8) translateX(-30px) skew(5deg);
+                text-shadow: 0 0 70px #ffff00, 0 0 140px #ff00ff, 0 0 210px #00ffff, 0 0 280px red;
             }
             100% { 
-                transform: scale(1) translateX(0);
-                text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff, 0 0 60px #ff0000;
+                transform: scale(1) translateX(0) skew(0deg);
+                text-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff, 0 0 90px #ff0000, 0 0 120px yellow;
             }
+        }
+        
+        /* Анимация фона */
+        @keyframes bgPulse {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+        
+        /* Анимация для рамки */
+        @keyframes borderGlow {
+            0% { border-color: #ff0000; box-shadow: 0 0 50px #ff0000, inset 0 0 30px #ff0000; }
+            25% { border-color: #00ff00; box-shadow: 0 0 50px #00ff00, inset 0 0 30px #00ff00; }
+            50% { border-color: #0000ff; box-shadow: 0 0 50px #0000ff, inset 0 0 30px #0000ff; }
+            75% { border-color: #ffff00; box-shadow: 0 0 50px #ffff00, inset 0 0 30px #ffff00; }
+            100% { border-color: #ff0000; box-shadow: 0 0 50px #ff0000, inset 0 0 30px #ff0000; }
         }
         
         body {
             margin: 0;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            background: linear-gradient(135deg, #000000, #1a0033, #330000, #003333, #000000);
+            background-size: 400% 400%;
+            animation: bgPulse 20s ease infinite;
             font-family: 'Arial Black', 'Impact', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
+            position: relative;
         }
         
-        /* Заголовок */
-        .title {
+        /* Падающие матюки на фоне */
+        body::before {
+            content: 'ХУЙ ПИЗДА ЕБЛАН МУДАК БЛЯДЬ ГАНДОН ЗАЛУПА МАНДА ХУЕСОС ПИЗДЮК ДОЛБОЁБ УЁБИЩЕ';
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            color: rgba(255, 0, 0, 0.03);
+            font-size: 4rem;
+            font-weight: bold;
+            word-wrap: break-word;
+            pointer-events: none;
+            transform: rotate(-15deg) scale(1.5);
+            z-index: 0;
+            line-height: 1.5;
+        }
+        
+        /* Заголовок - ИСПРАВЛЕНО позиционирование */
+        .title-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        .title {
             font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 900;
-            color: red;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            z-index: 9999;
             cursor: pointer;
-            animation: titleBlink 0.5s infinite;
+            animation: titleBlink 1.5s infinite;
             font-family: 'Arial Black', 'Impact', sans-serif;
-            -webkit-text-stroke: 2px darkred;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px 40px;
-            border-radius: 50px;
-            border: 3px solid red;
-            box-shadow: 0 0 100px rgba(255, 0, 0, 0.8);
+            -webkit-text-stroke: 2px black;
+            background: linear-gradient(45deg, rgba(255,0,0,0.3), rgba(255,255,0,0.3), rgba(255,0,255,0.3));
+            padding: 15px 40px;
+            border-radius: 60px;
+            border: 4px solid gold;
+            box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), inset 0 0 50px rgba(255, 255, 255, 0.5);
             white-space: nowrap;
             transition: all 0.3s ease;
+            pointer-events: auto;
+            backdrop-filter: blur(5px);
+            text-align: center;
         }
         
         .title.somersault {
-            animation: somersault 0.8s ease-in-out;
+            animation: somersault 0.8s ease-in-out !important;
         }
         
         .title:hover {
-            transform: translateX(-50%) scale(1.1);
-            box-shadow: 0 0 150px rgba(255, 0, 0, 1);
+            transform: scale(1.1);
+            box-shadow: 0 0 150px gold, inset 0 0 80px white;
+            border-color: white;
         }
         
-        /* Контейнер для матерного слова */
+        /* Контейнер для матерного слова с рамкой */
         .swear-container {
-            width: 100%;
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 100px 0 50px 0;
-            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 150px 0 50px 0;
+            padding: 40px;
             box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Рамка для матюков */
+        .swear-frame {
+            background: rgba(0, 0, 0, 0.8);
+            border: 8px solid red;
+            border-radius: 80px 20px 80px 20px;
+            padding: 60px 40px;
+            position: relative;
+            animation: borderGlow 3s infinite;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 100px rgba(255, 0, 0, 0.5), inset 0 0 100px rgba(255, 255, 0, 0.3);
+            transform: rotate(1deg);
+            transition: all 0.3s ease;
+        }
+        
+        .swear-frame:hover {
+            transform: rotate(-1deg) scale(1.02);
+            border-width: 10px;
+        }
+        
+        /* Уголки рамки */
+        .corner {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 6px solid gold;
+            z-index: 20;
+        }
+        
+        .corner-tl {
+            top: -10px;
+            left: -10px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 30px 0 0 0;
+        }
+        
+        .corner-tr {
+            top: -10px;
+            right: -10px;
+            border-left: none;
+            border-bottom: none;
+            border-radius: 0 30px 0 0;
+        }
+        
+        .corner-bl {
+            bottom: -10px;
+            left: -10px;
+            border-right: none;
+            border-top: none;
+            border-radius: 0 0 0 30px;
+        }
+        
+        .corner-br {
+            bottom: -10px;
+            right: -10px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 30px 0;
         }
         
         /* Само матерное слово */
         .swear-word {
-            font-size: clamp(3rem, 15vw, 10rem);
+            font-size: clamp(4rem, 15vw, 12rem);
             font-weight: 900;
             text-transform: uppercase;
             color: white;
             text-align: center;
             word-break: break-word;
-            max-width: 90%;
             line-height: 1.2;
             cursor: pointer;
-            transition: all 0.1s ease;
-            animation: nastyPulse 2s infinite ease-in-out;
-            font-family: 'Arial Black', 'Impact', 'Comic Sans MS', cursive;
+            animation: nastyPulse 2.5s infinite ease-in-out;
+            font-family: 'Arial Black', 'Impact', 'Comic Sans MS', 'Jokerman', cursive;
+            position: relative;
+            z-index: 15;
+            text-shadow: 0 0 30px cyan;
         }
         
         /* Кнопка */
         .button-container {
             text-align: center;
             margin: 30px 0;
+            position: relative;
+            z-index: 10;
         }
         
         .new-swear-button {
-            background: linear-gradient(45deg, #ff0000, #ff6600, #ff00ff);
+            background: linear-gradient(45deg, #ff0000, #ff6600, #ff00ff, #0000ff, #00ff00, #ffff00);
+            background-size: 300% 300%;
             border: none;
             color: white;
-            padding: 25px 60px;
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            padding: 30px 80px;
+            font-size: clamp(1.8rem, 5vw, 3rem);
             font-weight: bold;
-            border-radius: 60px;
+            border-radius: 60px 20px 60px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 4px solid yellow;
+            border: 6px dashed yellow;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
+            letter-spacing: 5px;
+            box-shadow: 0 0 80px rgba(255, 0, 0, 0.8), 0 0 150px rgba(255, 255, 0, 0.5);
             font-family: 'Arial Black', 'Impact', sans-serif;
+            animation: bgPulse 5s infinite;
+            transform: rotate(-2deg);
         }
         
         .new-swear-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 80px rgba(255, 0, 0, 1);
+            transform: rotate(2deg) scale(1.2);
+            box-shadow: 0 0 120px rgba(255, 0, 0, 1), 0 0 200px rgba(255, 255, 0, 0.8);
+            border-style: solid;
             border-color: white;
         }
         
         .new-swear-button:active {
-            transform: scale(0.95);
+            transform: rotate(-5deg) scale(0.9);
         }
         
-        /* Счетчик слов */
+        /* Статистика */
+        .stats {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 3px solid gold;
+            color: white;
+            font-size: 1.2rem;
+            font-family: 'Arial', sans-serif;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+        
+        .stats span {
+            color: gold;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin: 0 5px;
+        }
+        
+        /* Счетчик использованных слов */
         .counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 3px solid #ff00ff;
+            color: white;
+            font-size: 1.2rem;
+            font-family: 'Arial', sans-serif;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 50px rgba(255, 0, 255, 0.5);
+        }
+        
+        .counter span {
+            color: #ff00ff;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        /* Подсказка */
+        .hint {
+            position: fixed;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
             color: rgba(255, 255, 255, 0.5);
             font-size: 1rem;
-            margin-top: 20px;
             font-family: Arial, sans-serif;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            z-index: 50;
+            white-space: nowrap;
+            animation: hintPulse 2s infinite;
         }
         
-        /* Инструкция */
-        .hint {
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.9rem;
-            margin-top: 10px;
-            font-family: Arial, sans-serif;
+        @keyframes hintPulse {
+            0% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); background: rgba(0, 0, 0, 0.8); }
+            100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
         }
         
+        /* Мобильная адаптация */
         @media (max-width: 768px) {
             .title {
-                font-size: clamp(1.5rem, 6vw, 3rem);
+                font-size: clamp(1.2rem, 6vw, 2rem);
                 padding: 10px 20px;
                 white-space: normal;
-                text-align: center;
                 width: 90%;
             }
             
+            .swear-container {
+                margin: 120px 0 30px 0;
+                padding: 20px;
+            }
+            
+            .swear-frame {
+                padding: 40px 20px;
+            }
+            
             .swear-word {
-                font-size: clamp(2rem, 12vw, 5rem);
+                font-size: clamp(2.5rem, 12vw, 5rem);
             }
             
             .new-swear-button {
-                padding: 15px 30px;
+                padding: 20px 40px;
                 font-size: 1.5rem;
+                width: 90%;
+            }
+            
+            .stats, .counter {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+            
+            .stats span, .counter span {
+                font-size: 1.1rem;
+            }
+            
+            .hint {
+                top: 100px;
+                font-size: 0.8rem;
+                white-space: normal;
+                width: 90%;
+                text-align: center;
+            }
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .title-container {
+                padding: 10px;
+            }
+            
+            .stats {
+                left: 10px;
+                bottom: 10px;
+            }
+            
+            .counter {
+                right: 10px;
+                bottom: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Заголовок -->
-    <div class="title" id="mainTitle" onclick="doSomersault()">
-        МАТЮГАЛЬНИК 3000
+    <!-- Контейнер для заголовка (исправлено) -->
+    <div class="title-container">
+        <div class="title" id="mainTitle" onclick="doSomersault()">
+            🤬 МАТЮГАЛЬНИК 3000 🤬
+        </div>
     </div>
     
-    <!-- Контейнер с матерным словом -->
+    <!-- Подсказка -->
+    <div class="hint">
+        👆 Нажми на слово - скопируешь | Пробел - новый матюк
+    </div>
+    
+    <!-- Контейнер с матерным словом и рамкой -->
     <div class="swear-container">
-        <div class="swear-word" id="swearWord" onclick="copySwearWord()">
-            ХУЙ
+        <div class="swear-frame">
+            <!-- Золотые уголки -->
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+            
+            <!-- Само слово -->
+            <div class="swear-word" id="swearWord" onclick="copySwearWord()">
+                ХУЙ
+            </div>
         </div>
     </div>
     
@@ -216,18 +460,18 @@
         </button>
     </div>
     
-    <!-- Счетчик -->
-    <div class="counter" id="counter">
-        В арсенале: <span id="wordCount">69</span> матюков
+    <!-- Статистика -->
+    <div class="stats">
+        📊 В арсенале: <span id="wordCount">69</span> матюков
     </div>
     
-    <!-- Подсказка -->
-    <div class="hint">
-        👆 Нажми на слово - скопируешь в буфер
+    <!-- Счетчик кликов -->
+    <div class="counter">
+        🔥 Использовано: <span id="clickCount">0</span> раз
     </div>
 
     <script>
-        // Массив матерных слов
+        // Массив матерных слов (расширенный)
         const swearWords = [
             // Классика
             "ХУЙ", "ПИЗДА", "ЕБЛАН", "ГАНДОН", "МУДАК", "УЕБАН", 
@@ -270,10 +514,22 @@
             "ПЁС", "ПСИНА", "КОБЕЛЬ", "БАРАН", "ОСЁЛ",
             
             // Еда
-            "ХУЙНЯ", "ПИЗДЮЛИНА", "ЗАЛУПА ПОДЗАЛУПНАЯ"
+            "ХУЙНЯ", "ПИЗДЮЛИНА", "ЗАЛУПА ПОДЗАЛУПНАЯ",
+            
+            // Новые слова
+            "ОПУЩЕНЕЦ", "ЧЕПУШИЛА", "МАЛАХОЛЬНЫЙ", "ПРОТУБЕРАНЕЦ",
+            "ЭКСКРЕМЕНТ", "ФЕКАЛИЙ", "СРАНЬ", "ГОВЕНЦО",
+            "МОЧЕВЫПУСКАТЕЛЬ", "СПЕРМОТОКСИКОЗ", "АНОНИМУС",
+            "ПСИХОНАВТ", "ШИЗОИД", "ПАРАНОИК", "ШИЗОФРЕНИК",
+            "ДУРАК", "БАЛБЕС", "ОБАЛДУЙ", "БЕЗМОЗГЛЫЙ",
+            "КУРИЦА", "ПЕТУХ", "ИНДЮК", "ГУСЬ", "УТКА",
+            "БАБА", "БАБИЩА", "СТЕРВА", "МЕГЕРА", "ВЕДЬМА",
+            "ЧЁРТ", "ДЕМОН", "БЕС", "САТАНА", "ЛЮЦИФЕР",
+            "ПЬЯНЬ", "АЛКАШ", "СИНЮХА", "ПЬЯНЧУГА", "ЗЕЛЁНЫЙ ЗМИЙ"
         ];
         
         let currentSwearIndex = 0;
+        let clickCount = 0;
         let titleElement = document.getElementById('mainTitle');
         let swearElement = document.getElementById('swearWord');
         
@@ -293,10 +549,21 @@
             const newWord = getRandomSwearWord();
             swearElement.textContent = newWord;
             
+            // Обновляем счетчик кликов
+            clickCount++;
+            document.getElementById('clickCount').textContent = clickCount;
+            
             // Добавляем небольшую встряску при обновлении
             swearElement.style.animation = 'none';
             swearElement.offsetHeight; // Форсируем reflow
-            swearElement.style.animation = 'nastyPulse 2s infinite ease-in-out';
+            swearElement.style.animation = 'nastyPulse 2.5s infinite ease-in-out';
+            
+            // Эффект на рамке
+            const frame = document.querySelector('.swear-frame');
+            frame.style.transform = 'rotate(2deg) scale(1.05)';
+            setTimeout(() => {
+                frame.style.transform = 'rotate(1deg) scale(1)';
+            }, 200);
         }
         
         // Функция сальто для заголовка
@@ -308,10 +575,10 @@
                 titleElement.classList.remove('somersault');
             }, 800);
             
-            // Добавляем эффект при сальто
-            titleElement.style.transform = 'translateX(-50%) scale(1.2)';
+            // Эффект при сальто
+            titleElement.style.transform = 'scale(1.3)';
             setTimeout(() => {
-                titleElement.style.transform = 'translateX(-50%) scale(1)';
+                titleElement.style.transform = 'scale(1)';
             }, 400);
         }
         
@@ -321,21 +588,21 @@
             
             navigator.clipboard.writeText(currentWord).then(() => {
                 // Визуальный эффект при копировании
-                swearElement.style.transform = 'scale(1.2)';
+                swearElement.style.transform = 'scale(1.3) rotate(5deg)';
                 swearElement.style.transition = 'transform 0.2s';
                 
                 setTimeout(() => {
-                    swearElement.style.transform = 'scale(1)';
+                    swearElement.style.transform = 'scale(1) rotate(0deg)';
                     setTimeout(() => {
                         swearElement.style.transition = '';
                     }, 200);
                 }, 200);
                 
                 // Показываем всплывашку
-                showNotification(`"${currentWord}" скопировано!`);
+                showNotification(`"${currentWord}" скопировано! 🤘`);
             }).catch(err => {
                 console.error('Ошибка копирования:', err);
-                alert('Не удалось скопировать. Скажи: ' + currentWord);
+                alert('Не удалось скопировать. Просто скажи: ' + currentWord);
             });
         }
         
@@ -345,26 +612,32 @@
             notification.textContent = text;
             notification.style.cssText = `
                 position: fixed;
-                bottom: 20px;
+                top: 50%;
                 left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.8);
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, red, purple, blue);
                 color: white;
-                padding: 10px 20px;
-                border-radius: 30px;
-                font-family: Arial, sans-serif;
-                z-index: 10000;
-                border: 2px solid gold;
-                animation: fadeOut 2s forwards;
+                padding: 20px 40px;
+                border-radius: 60px;
+                font-family: Arial Black, sans-serif;
+                font-size: 2rem;
+                z-index: 20000;
+                border: 6px solid gold;
+                box-shadow: 0 0 200px gold;
+                animation: notificationFade 1.5s forwards;
+                text-shadow: 0 0 20px black;
+                letter-spacing: 2px;
             `;
             
             // Добавляем стиль для анимации
             const style = document.createElement('style');
             style.textContent = `
-                @keyframes fadeOut {
-                    0% { opacity: 1; bottom: 20px; }
-                    70% { opacity: 1; bottom: 20px; }
-                    100% { opacity: 0; bottom: -50px; }
+                @keyframes notificationFade {
+                    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5) rotate(-10deg); }
+                    20% { transform: translate(-50%, -50%) scale(1.2) rotate(5deg); }
+                    40% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+                    80% { opacity: 1; }
+                    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.1) rotate(360deg); }
                 }
             `;
             document.head.appendChild(style);
@@ -374,7 +647,7 @@
             setTimeout(() => {
                 document.body.removeChild(notification);
                 document.head.removeChild(style);
-            }, 2000);
+            }, 1500);
         }
         
         // Назначаем обработчики событий
@@ -392,13 +665,16 @@
         
         // Добавляем обработку клавиши пробел для нового слова
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !e.repeat) {
+            if (e.code === 'Space' && !e.repeat && 
+                !e.target.matches('button') && 
+                !e.target.matches('input') && 
+                !e.target.matches('textarea')) {
                 e.preventDefault();
                 updateSwearWord();
                 
                 // Визуальный эффект на кнопке
                 const button = document.getElementById('newSwearButton');
-                button.style.transform = 'scale(0.9)';
+                button.style.transform = 'rotate(-5deg) scale(0.9)';
                 setTimeout(() => {
                     button.style.transform = '';
                 }, 200);
@@ -412,6 +688,16 @@
         swearElement.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             copySwearWord();
+        });
+        
+        // Добавляем эффект при наведении на рамку
+        const frame = document.querySelector('.swear-frame');
+        frame.addEventListener('mouseenter', () => {
+            frame.style.transform = 'rotate(-2deg) scale(1.03)';
+        });
+        
+        frame.addEventListener('mouseleave', () => {
+            frame.style.transform = 'rotate(1deg) scale(1)';
         });
     </script>
 </body>
