@@ -5,91 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Матюгальник 3000</title>
     <style>
-        /* Анимация для мерцающей надписи */
-        @keyframes titleBlink {
-            0% { 
-                opacity: 1; 
-                text-shadow: 0 0 30px red, 0 0 60px darkred, 0 0 90px orange;
+        /* Оптимизированные анимации - меньше шагов, легче эффекты */
+        @keyframes titleGlow {
+            0%, 100% { 
+                text-shadow: 0 0 15px red, 0 0 30px darkred;
                 color: #ff0000;
             }
-            33% { 
-                opacity: 0.8; 
-                text-shadow: 0 0 40px #ff00ff, 0 0 80px #00ffff, 0 0 120px yellow;
+            50% { 
+                text-shadow: 0 0 25px #ff00ff, 0 0 45px #00ffff;
                 color: #ff00ff;
             }
-            66% { 
-                opacity: 0.6; 
-                text-shadow: 0 0 50px #00ff00, 0 0 100px #ff0000, 0 0 150px blue;
-                color: #00ff00;
-            }
-            100% { 
-                opacity: 1; 
-                text-shadow: 0 0 30px red, 0 0 60px darkred, 0 0 90px orange;
-                color: #ff0000;
-            }
         }
         
-        /* Анимация сальто */
         @keyframes somersault {
-            0% { transform: translateX(-50%) rotate(0deg) scale(1); }
-            25% { transform: translateX(-50%) rotate(90deg) scale(1.3); }
-            50% { transform: translateX(-50%) rotate(180deg) scale(0.8); }
-            75% { transform: translateX(-50%) rotate(270deg) scale(1.3); }
-            100% { transform: translateX(-50%) rotate(360deg) scale(1); }
+            to { transform: translateX(-50%) rotate(360deg); }
         }
         
-        /* Анимация пульсации для матерного слова */
-        @keyframes nastyPulse {
-            0% { 
-                transform: scale(1) translateX(0) skew(0deg);
-                text-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff, 0 0 90px #ff0000, 0 0 120px yellow;
+        @keyframes wordPulse {
+            0%, 100% { 
+                transform: scale(1);
+                text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
             }
-            20% { 
-                transform: scale(1.4) translateX(40px) skew(-10deg);
-                text-shadow: 0 0 40px #ff0000, 0 0 80px #ff00ff, 0 0 120px #00ff00, 0 0 160px blue;
-            }
-            40% { 
-                transform: scale(0.7) translateX(-40px) skew(10deg);
-                text-shadow: 0 0 50px #00ffff, 0 0 100px #ff0000, 0 0 150px #ff00ff, 0 0 200px green;
-            }
-            60% { 
-                transform: scale(1.5) translateX(30px) skew(-5deg);
-                text-shadow: 0 0 60px #ff00ff, 0 0 120px #00ff00, 0 0 180px #ffff00, 0 0 240px red;
-            }
-            80% { 
-                transform: scale(0.8) translateX(-30px) skew(5deg);
-                text-shadow: 0 0 70px #ffff00, 0 0 140px #ff00ff, 0 0 210px #00ffff, 0 0 280px red;
-            }
-            100% { 
-                transform: scale(1) translateX(0) skew(0deg);
-                text-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff, 0 0 90px #ff0000, 0 0 120px yellow;
+            50% { 
+                transform: scale(1.1);
+                text-shadow: 0 0 30px #ff0000, 0 0 60px #ff00ff;
             }
         }
         
-        /* Анимация фона */
-        @keyframes bgPulse {
-            0% { background-position: 0% 0%; }
-            25% { background-position: 100% 0%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-        
-        /* Анимация для рамки */
-        @keyframes borderGlow {
-            0% { border-color: #ff0000; box-shadow: 0 0 50px #ff0000, inset 0 0 30px #ff0000; }
-            25% { border-color: #00ff00; box-shadow: 0 0 50px #00ff00, inset 0 0 30px #00ff00; }
-            50% { border-color: #0000ff; box-shadow: 0 0 50px #0000ff, inset 0 0 30px #0000ff; }
-            75% { border-color: #ffff00; box-shadow: 0 0 50px #ffff00, inset 0 0 30px #ffff00; }
-            100% { border-color: #ff0000; box-shadow: 0 0 50px #ff0000, inset 0 0 30px #ff0000; }
+        @keyframes borderPulse {
+            0%, 100% { border-color: #ff0000; box-shadow: 0 0 30px #ff0000; }
+            50% { border-color: #00ff00; box-shadow: 0 0 30px #00ff00; }
         }
         
         body {
             margin: 0;
             min-height: 100vh;
-            background: linear-gradient(135deg, #000000, #1a0033, #330000, #003333, #000000);
-            background-size: 400% 400%;
-            animation: bgPulse 20s ease infinite;
+            background: linear-gradient(135deg, #0a0000, #1a0033, #2a0000, #002a2a);
+            background-size: 200% 200%;
             font-family: 'Arial Black', 'Impact', sans-serif;
             display: flex;
             flex-direction: column;
@@ -97,27 +49,12 @@
             justify-content: center;
             overflow-x: hidden;
             position: relative;
+            /* Оптимизация производительности */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
-        /* Падающие матюки на фоне */
-        body::before {
-            content: 'ХУЙ ПИЗДА ЕБЛАН МУДАК БЛЯДЬ ГАНДОН ЗАЛУПА МАНДА ХУЕСОС ПИЗДЮК ДОЛБОЁБ УЁБИЩЕ';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            color: rgba(255, 0, 0, 0.03);
-            font-size: 4rem;
-            font-weight: bold;
-            word-wrap: break-word;
-            pointer-events: none;
-            transform: rotate(-15deg) scale(1.5);
-            z-index: 0;
-            line-height: 1.5;
-        }
-        
-        /* Заголовок - ИСПРАВЛЕНО позиционирование */
+        /* Заголовок - фиксированное позиционирование */
         .title-container {
             position: fixed;
             top: 0;
@@ -136,103 +73,103 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             cursor: pointer;
-            animation: titleBlink 1.5s infinite;
+            animation: titleGlow 2s infinite ease-in-out;
             font-family: 'Arial Black', 'Impact', sans-serif;
             -webkit-text-stroke: 2px black;
-            background: linear-gradient(45deg, rgba(255,0,0,0.3), rgba(255,255,0,0.3), rgba(255,0,255,0.3));
+            background: rgba(0,0,0,0.3);
             padding: 15px 40px;
             border-radius: 60px;
             border: 4px solid gold;
-            box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), inset 0 0 50px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
             white-space: nowrap;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease;
             pointer-events: auto;
             backdrop-filter: blur(5px);
             text-align: center;
+            will-change: transform, box-shadow;
         }
         
         .title.somersault {
-            animation: somersault 0.8s ease-in-out !important;
+            animation: somersault 0.6s ease-in-out forwards;
         }
         
         .title:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 150px gold, inset 0 0 80px white;
-            border-color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 70px gold;
         }
         
-        /* Контейнер для матерного слова с рамкой */
+        /* Контейнер для матерного слова */
         .swear-container {
             width: 90%;
             max-width: 1200px;
             margin: 150px 0 50px 0;
-            padding: 40px;
+            padding: 30px;
             box-sizing: border-box;
             position: relative;
             z-index: 10;
         }
         
-        /* Рамка для матюков */
+        /* Оптимизированная рамка */
         .swear-frame {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             border: 8px solid red;
-            border-radius: 80px 20px 80px 20px;
-            padding: 60px 40px;
+            border-radius: 60px 15px 60px 15px;
+            padding: 50px 30px;
             position: relative;
-            animation: borderGlow 3s infinite;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 100px rgba(255, 0, 0, 0.5), inset 0 0 100px rgba(255, 255, 0, 0.3);
-            transform: rotate(1deg);
-            transition: all 0.3s ease;
+            animation: borderPulse 3s infinite ease-in-out;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 60px rgba(255, 0, 0, 0.3);
+            transform: rotate(0.5deg);
+            transition: transform 0.2s ease;
+            will-change: transform, border-color, box-shadow;
         }
         
         .swear-frame:hover {
-            transform: rotate(-1deg) scale(1.02);
-            border-width: 10px;
+            transform: rotate(-0.5deg) scale(1.01);
         }
         
         /* Уголки рамки */
         .corner {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            border: 6px solid gold;
+            width: 40px;
+            height: 40px;
+            border: 4px solid gold;
             z-index: 20;
         }
         
         .corner-tl {
-            top: -10px;
-            left: -10px;
+            top: -5px;
+            left: -5px;
             border-right: none;
             border-bottom: none;
-            border-radius: 30px 0 0 0;
+            border-radius: 25px 0 0 0;
         }
         
         .corner-tr {
-            top: -10px;
-            right: -10px;
+            top: -5px;
+            right: -5px;
             border-left: none;
             border-bottom: none;
-            border-radius: 0 30px 0 0;
+            border-radius: 0 25px 0 0;
         }
         
         .corner-bl {
-            bottom: -10px;
-            left: -10px;
+            bottom: -5px;
+            left: -5px;
             border-right: none;
             border-top: none;
-            border-radius: 0 0 0 30px;
+            border-radius: 0 0 0 25px;
         }
         
         .corner-br {
-            bottom: -10px;
-            right: -10px;
+            bottom: -5px;
+            right: -5px;
             border-left: none;
             border-top: none;
-            border-radius: 0 0 30px 0;
+            border-radius: 0 0 25px 0;
         }
         
-        /* Само матерное слово */
+        /* Оптимизированное матерное слово */
         .swear-word {
             font-size: clamp(4rem, 15vw, 12rem);
             font-weight: 900;
@@ -242,140 +179,117 @@
             word-break: break-word;
             line-height: 1.2;
             cursor: pointer;
-            animation: nastyPulse 2.5s infinite ease-in-out;
-            font-family: 'Arial Black', 'Impact', 'Comic Sans MS', 'Jokerman', cursive;
+            animation: wordPulse 2s infinite ease-in-out;
+            font-family: 'Arial Black', 'Impact', sans-serif;
             position: relative;
             z-index: 15;
-            text-shadow: 0 0 30px cyan;
+            text-shadow: 0 0 20px cyan;
+            transition: transform 0.1s ease;
+            will-change: transform, text-shadow;
         }
         
-        /* Кнопка */
-        .button-container {
-            text-align: center;
-            margin: 30px 0;
-            position: relative;
-            z-index: 10;
-        }
-        
+        /* Оптимизированная кнопка */
         .new-swear-button {
-            background: linear-gradient(45deg, #ff0000, #ff6600, #ff00ff, #0000ff, #00ff00, #ffff00);
-            background-size: 300% 300%;
+            background: linear-gradient(135deg, #ff0000, #ff6600, #ff00ff);
+            background-size: 200% 200%;
             border: none;
             color: white;
-            padding: 30px 80px;
+            padding: 25px 70px;
             font-size: clamp(1.8rem, 5vw, 3rem);
             font-weight: bold;
-            border-radius: 60px 20px 60px 20px;
+            border-radius: 50px 15px 50px 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 6px dashed yellow;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 4px dashed yellow;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            box-shadow: 0 0 80px rgba(255, 0, 0, 0.8), 0 0 150px rgba(255, 255, 0, 0.5);
+            letter-spacing: 3px;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
             font-family: 'Arial Black', 'Impact', sans-serif;
-            animation: bgPulse 5s infinite;
-            transform: rotate(-2deg);
+            transform: rotate(-1deg);
+            will-change: transform, box-shadow;
         }
         
         .new-swear-button:hover {
-            transform: rotate(2deg) scale(1.2);
-            box-shadow: 0 0 120px rgba(255, 0, 0, 1), 0 0 200px rgba(255, 255, 0, 0.8);
+            transform: rotate(1deg) scale(1.1);
+            box-shadow: 0 0 70px rgba(255, 0, 0, 0.8);
             border-style: solid;
-            border-color: white;
         }
         
         .new-swear-button:active {
-            transform: rotate(-5deg) scale(0.9);
+            transform: rotate(-2deg) scale(0.95);
+            transition: transform 0.05s;
         }
         
-        /* Статистика */
+        /* Статистика и счетчик */
+        .stats, .counter {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 20px;
+            border-radius: 40px;
+            color: white;
+            font-size: 1.1rem;
+            font-family: 'Arial', sans-serif;
+            z-index: 100;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            border: 2px solid gold;
+            will-change: box-shadow;
+        }
+        
         .stats {
-            position: fixed;
-            bottom: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px 25px;
-            border-radius: 50px;
-            border: 3px solid gold;
-            color: white;
-            font-size: 1.2rem;
-            font-family: 'Arial', sans-serif;
-            z-index: 100;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
         }
         
-        .stats span {
-            color: gold;
-            font-weight: bold;
-            font-size: 1.5rem;
-            margin: 0 5px;
-        }
-        
-        /* Счетчик использованных слов */
         .counter {
-            position: fixed;
-            bottom: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px 25px;
-            border-radius: 50px;
-            border: 3px solid #ff00ff;
-            color: white;
-            font-size: 1.2rem;
-            font-family: 'Arial', sans-serif;
-            z-index: 100;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 50px rgba(255, 0, 255, 0.5);
+            border-color: #ff00ff;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
         }
         
-        .counter span {
-            color: #ff00ff;
+        .stats span, .counter span {
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            margin: 0 4px;
         }
+        
+        .stats span { color: gold; }
+        .counter span { color: #ff00ff; }
         
         /* Подсказка */
         .hint {
             position: fixed;
-            top: 120px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
             font-family: Arial, sans-serif;
             background: rgba(0, 0, 0, 0.5);
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(4px);
             z-index: 50;
             white-space: nowrap;
-            animation: hintPulse 2s infinite;
-        }
-        
-        @keyframes hintPulse {
-            0% { opacity: 0.5; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.1); background: rgba(0, 0, 0, 0.8); }
-            100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         /* Мобильная адаптация */
         @media (max-width: 768px) {
             .title {
                 font-size: clamp(1.2rem, 6vw, 2rem);
-                padding: 10px 20px;
+                padding: 8px 16px;
                 white-space: normal;
                 width: 90%;
             }
             
             .swear-container {
                 margin: 120px 0 30px 0;
-                padding: 20px;
+                padding: 15px;
             }
             
             .swear-frame {
-                padding: 40px 20px;
+                padding: 30px 15px;
             }
             
             .swear-word {
@@ -383,14 +297,14 @@
             }
             
             .new-swear-button {
-                padding: 20px 40px;
-                font-size: 1.5rem;
+                padding: 15px 30px;
+                font-size: 1.4rem;
                 width: 90%;
             }
             
             .stats, .counter {
                 font-size: 0.9rem;
-                padding: 10px 15px;
+                padding: 8px 12px;
             }
             
             .stats span, .counter span {
@@ -398,34 +312,17 @@
             }
             
             .hint {
-                top: 100px;
-                font-size: 0.8rem;
+                top: 85px;
+                font-size: 0.75rem;
                 white-space: normal;
                 width: 90%;
                 text-align: center;
             }
         }
-        
-        /* Для очень маленьких экранов */
-        @media (max-width: 480px) {
-            .title-container {
-                padding: 10px;
-            }
-            
-            .stats {
-                left: 10px;
-                bottom: 10px;
-            }
-            
-            .counter {
-                right: 10px;
-                bottom: 10px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Контейнер для заголовка (исправлено) -->
+    <!-- Контейнер для заголовка -->
     <div class="title-container">
         <div class="title" id="mainTitle" onclick="doSomersault()">
             🤬 МАТЮГАЛЬНИК 3000 🤬
@@ -437,9 +334,9 @@
         👆 Нажми на слово - скопируешь | Пробел - новый матюк
     </div>
     
-    <!-- Контейнер с матерным словом и рамкой -->
+    <!-- Контейнер с матерным словом -->
     <div class="swear-container">
-        <div class="swear-frame">
+        <div class="swear-frame" id="swearFrame">
             <!-- Золотые уголки -->
             <div class="corner corner-tl"></div>
             <div class="corner corner-tr"></div>
@@ -447,7 +344,7 @@
             <div class="corner corner-br"></div>
             
             <!-- Само слово -->
-            <div class="swear-word" id="swearWord" onclick="copySwearWord()">
+            <div class="swear-word" id="swearWord">
                 ХУЙ
             </div>
         </div>
@@ -471,234 +368,194 @@
     </div>
 
     <script>
-        // Массив матерных слов (расширенный)
-        const swearWords = [
-            // Классика
-            "ХУЙ", "ПИЗДА", "ЕБЛАН", "ГАНДОН", "МУДАК", "УЕБАН", 
-            "ДОЛБОЁБ", "ЗАЛУПА", "МАНДА", "ШЛЮХА", "БЛЯДЬ", 
-            "ПИДОР", "РАК", "ЧМО", "ЛОХ", "СОПЛЯ", "ГАВНО",
+        (function() {
+            // Оптимизированный массив слов (оставил как есть)
+            const swearWords = [
+                "ХУЙ", "ПИЗДА", "ЕБЛАН", "ГАНДОН", "МУДАК", "УЕБАН", 
+                "ДОЛБОЁБ", "ЗАЛУПА", "МАНДА", "ШЛЮХА", "БЛЯДЬ", 
+                "ПИДОР", "РАК", "ЧМО", "ЛОХ", "СОПЛЯ", "ГАВНО",
+                "ХУЕСОС", "ПИЗДОБОЛ", "ЕБАНЬКО", "ЗАПИЗДЕНЬ", 
+                "МУДОЁБ", "УЁБИЩЕ", "ДОЛБОПИЗД", "ХУЕМОРДА",
+                "ПИЗДЮК", "ГАНДОНИНА", "ШМАРА", "КОЗЁЛ",
+                "НИЩЕБРОД", "ЧЕРТ", "ВЫБЛЫДОК", "УРОД", "ДЕБИЛ",
+                "ИДИОТ", "КРЕТИН", "СКОТИНА", "СВОЛОЧЬ", "ТВАРЬ",
+                "МРАЗЬ", "ГАД", "ПАДАЛЬ", "ГНИДА", "ЗМЕЯ",
+                "ХУЙЛО", "ПИЗДОСТРАДАЛЕЦ", "МАНДАВОШКА", "ЗАЛУПИНСК",
+                "ГОВНОМЕС", "ХУЕВАТИНА", "ПИЗДОПРОЁБЩИК", "ДРОЧИЛА",
+                "ОНАНИСТ", "РУКОБЛУД", "СКВЕРНОСЛОВ", "МАТЕМАТИК",
+                "ЕБАНИНА", "ХУЕТА", "ПИЗДЕЦ", "ЗАПИЗДЯЙ", "ПЕРЕПИЗДЫШ",
+                "НЕДОНОСОК", "ВЫСЕРЫШ", "ОТБРОС", "ПОДОНОК",
+                "ХУЁВЫЙ", "ПИЗДАТЫЙ", "ЗАПИЗДЕННЫЙ", "ОБОСРАННЫЙ",
+                "НАХУЯРИЛ", "ОБЪЕБАЛ", "ЗАЛУПИЛСЯ", "РАСПИЗДЯЙНИЧАЛ",
+                "ХУЯКНУТЬ", "ПИЗДАНУТЬ", "ЗАХУЯРИТЬ", "НАПИЗДЕТЬ",
+                "СПИЗДИТЬ", "УЁБЫВАТЬ", "ЗАЕБАТЬ", "ДОЕБАТЬСЯ",
+                "ПИЗДОГЛАЗЫЙ", "ХУЕГУБЫЙ", "МУДОЁБИНА", "ГАНДОНЧИК",
+                "ПЁС", "ПСИНА", "КОБЕЛЬ", "БАРАН", "ОСЁЛ",
+                "ХУЙНЯ", "ПИЗДЮЛИНА", "ЗАЛУПА ПОДЗАЛУПНАЯ",
+                "ОПУЩЕНЕЦ", "ЧЕПУШИЛА", "МАЛАХОЛЬНЫЙ", "ПРОТУБЕРАНЕЦ",
+                "ЭКСКРЕМЕНТ", "ФЕКАЛИЙ", "СРАНЬ", "ГОВЕНЦО",
+                "МОЧЕВЫПУСКАТЕЛЬ", "СПЕРМОТОКСИКОЗ", "АНОНИМУС",
+                "ПСИХОНАВТ", "ШИЗОИД", "ПАРАНОИК", "ШИЗОФРЕНИК",
+                "ДУРАК", "БАЛБЕС", "ОБАЛДУЙ", "БЕЗМОЗГЛЫЙ",
+                "КУРИЦА", "ПЕТУХ", "ИНДЮК", "ГУСЬ", "УТКА",
+                "БАБА", "БАБИЩА", "СТЕРВА", "МЕГЕРА", "ВЕДЬМА",
+                "ЧЁРТ", "ДЕМОН", "БЕС", "САТАНА", "ЛЮЦИФЕР",
+                "ПЬЯНЬ", "АЛКАШ", "СИНЮХА", "ПЬЯНЧУГА", "ЗЕЛЁНЫЙ ЗМИЙ"
+            ];
             
-            // Составные
-            "ХУЕСОС", "ПИЗДОБОЛ", "ЕБАНЬКО", "ЗАПИЗДЕНЬ", 
-            "МУДОЁБ", "УЁБИЩЕ", "ДОЛБОПИЗД", "ХУЕМОРДА",
-            "ПИЗДЮК", "ГАНДОНИНА", "ШМАРА", "КОЗЁЛ",
+            // Кэшируем DOM элементы
+            const titleEl = document.getElementById('mainTitle');
+            const swearEl = document.getElementById('swearWord');
+            const frameEl = document.getElementById('swearFrame');
+            const buttonEl = document.getElementById('newSwearButton');
+            const clickCountEl = document.getElementById('clickCount');
             
-            // Оскорбления
-            "НИЩЕБРОД", "ЧЕРТ", "ВЫБЛЫДОК", "УРОД", "ДЕБИЛ",
-            "ИДИОТ", "КРЕТИН", "СКОТИНА", "СВОЛОЧЬ", "ТВАРЬ",
-            "МРАЗЬ", "ГАД", "ПАДАЛЬ", "ГНИДА", "ЗМЕЯ",
+            // Состояние
+            let currentIndex = Math.floor(Math.random() * swearWords.length);
+            let clickCount = 0;
             
-            // Творческие
-            "ХУЙЛО", "ПИЗДОСТРАДАЛЕЦ", "МАНДАВОШКА", "ЗАЛУПИНСК",
-            "ГОВНОМЕС", "ХУЕВАТИНА", "ПИЗДОПРОЁБЩИК", "ДРОЧИЛА",
-            "ОНАНИСТ", "РУКОБЛУД", "СКВЕРНОСЛОВ", "МАТЕМАТИК",
+            // Инициализация
+            swearEl.textContent = swearWords[currentIndex];
+            document.getElementById('wordCount').textContent = swearWords.length;
             
-            // Длинные
-            "ЕБАНИНА", "ХУЕТА", "ПИЗДЕЦ", "ЗАПИЗДЯЙ", "ПЕРЕПИЗДЫШ",
-            "НЕДОНОСОК", "ВЫСЕРЫШ", "ОТБРОС", "ПОДОНОК",
-            
-            // Прилагательные
-            "ХУЁВЫЙ", "ПИЗДАТЫЙ", "ЗАПИЗДЕННЫЙ", "ОБОСРАННЫЙ",
-            
-            // Глаголы
-            "НАХУЯРИЛ", "ОБЪЕБАЛ", "ЗАЛУПИЛСЯ", "РАСПИЗДЯЙНИЧАЛ",
-            
-            // Эпичные
-            "ХУЯКНУТЬ", "ПИЗДАНУТЬ", "ЗАХУЯРИТЬ", "НАПИЗДЕТЬ",
-            "СПИЗДИТЬ", "УЁБЫВАТЬ", "ЗАЕБАТЬ", "ДОЕБАТЬСЯ",
-            
-            // Люди
-            "ПИЗДОГЛАЗЫЙ", "ХУЕГУБЫЙ", "МУДОЁБИНА", "ГАНДОНЧИК",
-            
-            // Животные
-            "ПЁС", "ПСИНА", "КОБЕЛЬ", "БАРАН", "ОСЁЛ",
-            
-            // Еда
-            "ХУЙНЯ", "ПИЗДЮЛИНА", "ЗАЛУПА ПОДЗАЛУПНАЯ",
-            
-            // Новые слова
-            "ОПУЩЕНЕЦ", "ЧЕПУШИЛА", "МАЛАХОЛЬНЫЙ", "ПРОТУБЕРАНЕЦ",
-            "ЭКСКРЕМЕНТ", "ФЕКАЛИЙ", "СРАНЬ", "ГОВЕНЦО",
-            "МОЧЕВЫПУСКАТЕЛЬ", "СПЕРМОТОКСИКОЗ", "АНОНИМУС",
-            "ПСИХОНАВТ", "ШИЗОИД", "ПАРАНОИК", "ШИЗОФРЕНИК",
-            "ДУРАК", "БАЛБЕС", "ОБАЛДУЙ", "БЕЗМОЗГЛЫЙ",
-            "КУРИЦА", "ПЕТУХ", "ИНДЮК", "ГУСЬ", "УТКА",
-            "БАБА", "БАБИЩА", "СТЕРВА", "МЕГЕРА", "ВЕДЬМА",
-            "ЧЁРТ", "ДЕМОН", "БЕС", "САТАНА", "ЛЮЦИФЕР",
-            "ПЬЯНЬ", "АЛКАШ", "СИНЮХА", "ПЬЯНЧУГА", "ЗЕЛЁНЫЙ ЗМИЙ"
-        ];
-        
-        let currentSwearIndex = 0;
-        let clickCount = 0;
-        let titleElement = document.getElementById('mainTitle');
-        let swearElement = document.getElementById('swearWord');
-        
-        // Функция для получения случайного матерного слова
-        function getRandomSwearWord() {
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * swearWords.length);
-            } while (randomIndex === currentSwearIndex && swearWords.length > 1);
-            
-            currentSwearIndex = randomIndex;
-            return swearWords[randomIndex];
-        }
-        
-        // Обновление слова на странице
-        function updateSwearWord() {
-            const newWord = getRandomSwearWord();
-            swearElement.textContent = newWord;
-            
-            // Обновляем счетчик кликов
-            clickCount++;
-            document.getElementById('clickCount').textContent = clickCount;
-            
-            // Добавляем небольшую встряску при обновлении
-            swearElement.style.animation = 'none';
-            swearElement.offsetHeight; // Форсируем reflow
-            swearElement.style.animation = 'nastyPulse 2.5s infinite ease-in-out';
-            
-            // Эффект на рамке
-            const frame = document.querySelector('.swear-frame');
-            frame.style.transform = 'rotate(2deg) scale(1.05)';
-            setTimeout(() => {
-                frame.style.transform = 'rotate(1deg) scale(1)';
-            }, 200);
-        }
-        
-        // Функция сальто для заголовка
-        function doSomersault() {
-            titleElement.classList.add('somersault');
-            
-            // Убираем класс после завершения анимации
-            setTimeout(() => {
-                titleElement.classList.remove('somersault');
-            }, 800);
-            
-            // Эффект при сальто
-            titleElement.style.transform = 'scale(1.3)';
-            setTimeout(() => {
-                titleElement.style.transform = 'scale(1)';
-            }, 400);
-        }
-        
-        // Функция копирования слова в буфер обмена
-        function copySwearWord() {
-            const currentWord = swearElement.textContent;
-            
-            navigator.clipboard.writeText(currentWord).then(() => {
-                // Визуальный эффект при копировании
-                swearElement.style.transform = 'scale(1.3) rotate(5deg)';
-                swearElement.style.transition = 'transform 0.2s';
-                
-                setTimeout(() => {
-                    swearElement.style.transform = 'scale(1) rotate(0deg)';
-                    setTimeout(() => {
-                        swearElement.style.transition = '';
-                    }, 200);
-                }, 200);
-                
-                // Показываем всплывашку
-                showNotification(`"${currentWord}" скопировано! 🤘`);
-            }).catch(err => {
-                console.error('Ошибка копирования:', err);
-                alert('Не удалось скопировать. Просто скажи: ' + currentWord);
-            });
-        }
-        
-        // Простая всплывашка
-        function showNotification(text) {
-            const notification = document.createElement('div');
-            notification.textContent = text;
-            notification.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: linear-gradient(45deg, red, purple, blue);
-                color: white;
-                padding: 20px 40px;
-                border-radius: 60px;
-                font-family: Arial Black, sans-serif;
-                font-size: 2rem;
-                z-index: 20000;
-                border: 6px solid gold;
-                box-shadow: 0 0 200px gold;
-                animation: notificationFade 1.5s forwards;
-                text-shadow: 0 0 20px black;
-                letter-spacing: 2px;
-            `;
-            
-            // Добавляем стиль для анимации
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes notificationFade {
-                    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5) rotate(-10deg); }
-                    20% { transform: translate(-50%, -50%) scale(1.2) rotate(5deg); }
-                    40% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-                    80% { opacity: 1; }
-                    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.1) rotate(360deg); }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                document.body.removeChild(notification);
-                document.head.removeChild(style);
-            }, 1500);
-        }
-        
-        // Назначаем обработчики событий
-        document.getElementById('newSwearButton').addEventListener('click', updateSwearWord);
-        
-        // Обновляем счетчик слов
-        document.getElementById('wordCount').textContent = swearWords.length;
-        
-        // Инициализация
-        window.addEventListener('load', () => {
-            // Выбираем случайное слово при загрузке
-            currentSwearIndex = Math.floor(Math.random() * swearWords.length);
-            swearElement.textContent = swearWords[currentSwearIndex];
-        });
-        
-        // Добавляем обработку клавиши пробел для нового слова
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !e.repeat && 
-                !e.target.matches('button') && 
-                !e.target.matches('input') && 
-                !e.target.matches('textarea')) {
-                e.preventDefault();
-                updateSwearWord();
-                
-                // Визуальный эффект на кнопке
-                const button = document.getElementById('newSwearButton');
-                button.style.transform = 'rotate(-5deg) scale(0.9)';
-                setTimeout(() => {
-                    button.style.transform = '';
-                }, 200);
+            // Оптимизированная функция получения случайного индекса
+            function getRandomIndex() {
+                if (swearWords.length === 1) return 0;
+                let newIndex;
+                do {
+                    newIndex = Math.floor(Math.random() * swearWords.length);
+                } while (newIndex === currentIndex);
+                return newIndex;
             }
-        });
-        
-        // Добавляем обработку клика по слову
-        swearElement.addEventListener('click', copySwearWord);
-        
-        // Скрываем контекстное меню на слове (чтобы не мешало)
-        swearElement.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            copySwearWord();
-        });
-        
-        // Добавляем эффект при наведении на рамку
-        const frame = document.querySelector('.swear-frame');
-        frame.addEventListener('mouseenter', () => {
-            frame.style.transform = 'rotate(-2deg) scale(1.03)';
-        });
-        
-        frame.addEventListener('mouseleave', () => {
-            frame.style.transform = 'rotate(1deg) scale(1)';
-        });
+            
+            // Оптимизированное обновление слова
+            function updateSwearWord() {
+                currentIndex = getRandomIndex();
+                swearEl.textContent = swearWords[currentIndex];
+                
+                // Обновляем счетчик
+                clickCountEl.textContent = ++clickCount;
+                
+                // Легкая анимация через классы вместо прямых манипуляций стилями
+                swearEl.style.transform = 'scale(1.1)';
+                frameEl.style.transform = 'rotate(1deg) scale(1.02)';
+                
+                // Сбрасываем через requestAnimationFrame для плавности
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        swearEl.style.transform = '';
+                        frameEl.style.transform = '';
+                    }, 100);
+                });
+            }
+            
+            // Оптимизированная функция сальто
+            function doSomersault() {
+                titleEl.classList.add('somersault');
+                titleEl.style.transform = 'scale(1.2)';
+                
+                setTimeout(() => {
+                    titleEl.classList.remove('somersault');
+                    titleEl.style.transform = '';
+                }, 600);
+            }
+            
+            // Оптимизированное копирование
+            function copySwearWord() {
+                const word = swearEl.textContent;
+                
+                navigator.clipboard.writeText(word).then(() => {
+                    // Легкая анимация через transform
+                    swearEl.style.transform = 'scale(1.2)';
+                    
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            swearEl.style.transform = '';
+                        }, 150);
+                    });
+                    
+                    // Показываем уведомление
+                    showNotification(word);
+                }).catch(() => {
+                    alert('Не удалось скопировать: ' + word);
+                });
+            }
+            
+            // Оптимизированное уведомление
+            function showNotification(word) {
+                const notif = document.createElement('div');
+                notif.textContent = `"${word}" скопировано! 🤘`;
+                notif.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(45deg, red, purple);
+                    color: white;
+                    padding: 15px 30px;
+                    border-radius: 40px;
+                    font-family: Arial Black, sans-serif;
+                    font-size: clamp(1rem, 5vw, 2rem);
+                    z-index: 20000;
+                    border: 4px solid gold;
+                    box-shadow: 0 0 100px gold;
+                    opacity: 0;
+                    transition: opacity 0.2s, transform 0.3s;
+                    pointer-events: none;
+                `;
+                
+                document.body.appendChild(notif);
+                
+                // Используем requestAnimationFrame для плавного появления
+                requestAnimationFrame(() => {
+                    notif.style.opacity = '1';
+                    notif.style.transform = 'translate(-50%, -50%) scale(1.1)';
+                    
+                    setTimeout(() => {
+                        notif.style.opacity = '0';
+                        notif.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                        setTimeout(() => {
+                            document.body.removeChild(notif);
+                        }, 200);
+                    }, 800);
+                });
+            }
+            
+            // Обработчики событий
+            buttonEl.addEventListener('click', updateSwearWord);
+            swearEl.addEventListener('click', copySwearWord);
+            titleEl.addEventListener('click', doSomersault);
+            
+            // Обработка пробела
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' && !e.repeat && 
+                    !e.target.matches('button, input, textarea')) {
+                    e.preventDefault();
+                    updateSwearWord();
+                    
+                    // Анимация кнопки
+                    buttonEl.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        buttonEl.style.transform = '';
+                    }, 100);
+                }
+            });
+            
+            // Оптимизированные эффекты наведения
+            frameEl.addEventListener('mouseenter', () => {
+                frameEl.style.transform = 'rotate(-0.5deg) scale(1.02)';
+            });
+            
+            frameEl.addEventListener('mouseleave', () => {
+                frameEl.style.transform = '';
+            });
+            
+            // Отключаем контекстное меню на слове
+            swearEl.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                copySwearWord();
+            });
+        })();
     </script>
 </body>
 </html>
